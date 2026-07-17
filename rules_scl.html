@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SRG桃源服务器 | 服规制度</title>
     <style>
-        
+        /* ========== 基础重置 & 像素字体 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +14,6 @@
             image-rendering: pixelated;
         }
 
-        
         @font-face {
             font-family: 'UnifontPixel';
             src: url('font/Unifont13.0.01.ttf') format('truetype');
@@ -31,7 +30,7 @@
             position: relative;
         }
 
-        
+        /* ========== 波点背景（斜向左上） ========== */
         body::before {
             content: "";
             position: fixed;
@@ -59,7 +58,7 @@
             }
         }
 
-        
+        /* ========== 主容器 ========== */
         .container {
             position: relative;
             z-index: 2;
@@ -80,7 +79,7 @@
             margin: 12px 0;
         }
 
-        
+        /* ========== 横幅Banner ========== */
         .hero-banner {
             position: relative;
             width: 100%;
@@ -100,7 +99,6 @@
             image-rendering: auto;
         }
 
-        
         .site-title-overlay {
             position: absolute;
             left: 20px;
@@ -119,7 +117,7 @@
             backdrop-filter: blur(3px);
         }
 
-        
+        /* ========== 主网格布局 ========== */
         .content-grid {
             display: grid;
             grid-template-columns: 4fr 1fr;
@@ -127,7 +125,7 @@
             margin: 20px 0 25px;
         }
 
-        
+        /* ========== 左侧大框 ========== */
         .left-bigbox {
             background: rgba(252, 253, 255, 0.94);
             border: 3px solid #3b8f60;
@@ -153,7 +151,7 @@
             color: #1e3f2e;
         }
 
-        
+        /* ========== PDF表格 ========== */
         .rules-table-wrapper {
             margin: 24px 0 12px 0;
             overflow-x: auto;
@@ -198,7 +196,67 @@
             box-shadow: 2px 2px 0 #8bb29b;
         }
 
-        
+        /* ========== 参考文章模块 ========== */
+        .ref-divider {
+            margin: 28px 0 18px 0;
+            border: none;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #2f8b5b, #2f8b5b 8px, #b3e4c4 8px, #b3e4c4 16px);
+        }
+
+        .ref-title {
+            font-size: 1.7rem;
+            font-family: 'UnifontPixel', 'Courier New', monospace;
+            color: #1a5338;
+            border-left: 12px solid #ffb347;
+            padding-left: 15px;
+            margin: 10px 0 20px 0;
+            letter-spacing: 2px;
+        }
+
+        .ref-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: flex-start;
+        }
+
+        .ref-card {
+            flex: 1 0 calc(25% - 16px);
+            min-width: 120px;
+            max-width: 180px;
+            background: #f4fcf7;
+            border: 2px solid #3b8f60;
+            padding: 8px;
+            box-shadow: 3px 3px 0 #b9ddcb;
+            cursor: pointer;
+            transition: 0.1s;
+            text-align: center;
+        }
+        .ref-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 #8bb29b;
+            border-color: #ffb347;
+        }
+        .ref-card img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2 / 3; /* 竖长比例 */
+            object-fit: cover;
+            border: 1px solid #2f7a51;
+            display: block;
+            background: #d4ecde;
+            image-rendering: crisp-edges;
+        }
+        .ref-card .ref-label {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #1d452f;
+            word-break: break-word;
+        }
+
+        /* ========== 右侧小框 ========== */
         .right-smallbox {
             background: rgba(248, 252, 255, 0.96);
             border: 3px solid #419566;
@@ -240,7 +298,6 @@
             word-break: break-word;
         }
 
-        
         .info-card li a {
             color: #226644;
             text-decoration: none;
@@ -263,7 +320,7 @@
             font-size: 0.8rem;
         }
 
-        
+        /* ========== 通用按钮 ========== */
         .back-home-btn {
             display: inline-block;
             background: #eef4fc;
@@ -287,7 +344,7 @@
             box-shadow: 4px 4px 0px #629e7a;
         }
 
-        
+        /* ========== 语言切换 ========== */
         .lang-switch {
             display: flex;
             justify-content: flex-end;
@@ -322,6 +379,102 @@
             box-shadow: 4px 4px 0px #629e7a;
         }
 
+        /* ========== 模态框（弹窗）—— 适配 A4 比例图片 ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #f3fcf6;
+            border: 6px solid #2f8b5b;
+            box-shadow: 16px 16px 0px #1f4c2d;
+            padding: 24px 28px;
+            max-width: 820px;      /* 足够容纳 A4 比例图片 (宽高比 ~1:1.414) */
+            width: 92%;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            cursor: default;
+            font-family: 'UnifontPixel', 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .modal-close {
+            position: absolute;
+            top: 8px;
+            right: 16px;
+            font-size: 2.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #2f6e47;
+            background: none;
+            border: none;
+            line-height: 1;
+            z-index: 10;
+        }
+        .modal-close:hover {
+            color: #b85c1a;
+        }
+        .modal-box img {
+            width: 100%;
+            max-width: 700px;          /* 限制最大宽度，保持清晰 */
+            height: auto;
+            max-height: 68vh;          /* 限制高度，避免溢出 */
+            object-fit: contain;
+            border: 2px solid #3b8f60;
+            margin-bottom: 16px;
+            background: #fff;
+            image-rendering: crisp-edges;
+        }
+        .modal-box h2 {
+            color: #1a5338;
+            border-left: 8px solid #ffb347;
+            padding-left: 12px;
+            margin-bottom: 12px;
+            width: 100%;
+            font-size: 1.4rem;
+        }
+        .modal-box .modal-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #1e3f2e;
+            margin: 12px 0 18px 0;
+            width: 100%;
+        }
+        .modal-download-btn {
+            display: inline-block;
+            background: #ffcd94;
+            border: 2px solid #b85c1a;
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #1d452f;
+            text-decoration: none;
+            box-shadow: 3px 3px 0 #8bb29b;
+            transition: 0.05s;
+            font-family: 'UnifontPixel', monospace;
+            align-self: flex-start;
+        }
+        .modal-download-btn:hover {
+            background: #f5b86e;
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 #629e7a;
+        }
+
+        /* ========== Footer ========== */
         footer {
             margin-top: 30px;
             text-align: center;
@@ -341,27 +494,20 @@
             50% { opacity: 0; }
         }
 
+        /* ========== 响应式 ========== */
         @media (max-width: 780px) {
-            body {
-                padding: 16px;
-            }
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-            .hero-banner {
-                height: 130px;
-            }
-            .site-title-overlay {
-                font-size: 1.1rem;
-                bottom: 8px;
-                left: 12px;
-            }
-            .back-home-btn {
-                font-size: 0.8rem;
-                padding: 4px 12px;
-            }
+            body { padding: 16px; }
+            .content-grid { grid-template-columns: 1fr; gap: 24px; }
+            .hero-banner { height: 130px; }
+            .site-title-overlay { font-size: 1.1rem; bottom: 8px; left: 12px; }
+            .ref-card { flex: 1 0 calc(50% - 16px); max-width: 160px; }
+            .modal-box { padding: 16px; max-width: 96%; }
+            .modal-box img { max-height: 55vh; }
         }
+        @media (max-width: 480px) {
+            .ref-card { flex: 1 0 100%; max-width: 100%; }
+        }
+
         ::-webkit-scrollbar {
             width: 12px;
             background: #d4ecde;
@@ -375,31 +521,29 @@
 <body>
 
 <div class="container">
-    
+    <!-- 语言切换 -->
     <div class="lang-switch">
         <button class="lang-btn" data-lang="zh">简体中文</button>
         <button class="lang-btn" data-lang="zh-TW">繁體中文</button>
         <button class="lang-btn" data-lang="en">ENGLISH</button>
     </div>
 
-    
+    <!-- Banner -->
     <div class="hero-banner">
-        
         <img src="image/CORT1.jpg" alt="SRG Banner" onerror="this.src='https://placehold.co/1200x300/479c6e/white?text=🌿+SRG+服务器+🌿'">
-        
         <div class="site-title-overlay" id="siteNameOverlay"> 服务器规则</div>
     </div>
 
-    
+    <!-- 主网格 -->
     <div class="content-grid">
-        
+        <!-- 左侧大框 -->
         <div class="left-bigbox" id="leftBigContent">
-            
+            <!-- 由 JS 动态生成 -->
         </div>
 
-        
+        <!-- 右侧小框 -->
         <div class="right-smallbox" id="rightSmallContent">
-            
+            <!-- 由 JS 动态生成 -->
         </div>
     </div>
 
@@ -409,11 +553,22 @@
     </footer>
 </div>
 
+<!-- ========== 模态框（弹窗） ========== -->
+<div class="modal-overlay" id="articleModal">
+    <div class="modal-box">
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+        <img id="modalImg" src="" alt="封面图">
+        <h2 id="modalTitle">标题</h2>
+        <div class="modal-desc" id="modalDesc">介绍文字</div>
+        <a id="modalDownloadBtn" href="#" class="modal-download-btn" download>下载 PDF</a>
+    </div>
+</div>
+
 <script>
-    
-    
+    // ============================================================
+    //  多语言数据 (仅用于原有部分，参考文章保持中文)
+    // ============================================================
     const LANGUAGE_DATA = {
-        
         "zh": {
             siteName: " 服务器规则",
             backBtn: "← 返回主页",
@@ -433,12 +588,12 @@
                     },
                     {
                         title: "SRG规定见解",
-                        items: ["《SRG玩家行为守则》注解", "土地所有权", "第11/2026号违规裁量注解", "毁损财物及破坏问题"]
+                        // 此部分将在 JS 中动态替换为参考文章的 PDF 链接
+                        items: [] // 占位，由渲染函数填充
                     }
                 ]
             }
         },
-        
         "zh-TW": {
             siteName: " 伺服器規則",
             backBtn: "← 返回主頁",
@@ -458,12 +613,11 @@
                     },
                     {
                         title: "📖 SRG規定見解",
-                        items: ["《SRG玩家行為守則》註解", "土地所有權與開發條例", "第11/2026號違規裁量註解", "毀損財物及輕度破壞問題指引"]
+                        items: [] // 占位
                     }
                 ]
             }
         },
-        
         "en": {
             siteName: " Server Rules",
             backBtn: "← Home",
@@ -483,14 +637,16 @@
                     },
                     {
                         title: "📖 SRG Legal Insights",
-                        items: ["Annotations to SRG Player Code of Conduct", "Land Ownership & Development Rules", "Annotations to Decree No. 11/2026", "Guidelines on Property Damage & Minor Griefing"]
+                        items: [] // 占位
                     }
                 ]
             }
         }
     };
 
-    
+    // ============================================================
+    //  PDF表格生成 (原功能)
+    // ============================================================
     function generatePdfTable(langCode) {
         const files = [
             {
@@ -519,19 +675,15 @@
             }
         ];
 
-        let tableCaption = "";
-        if (langCode === "zh") tableCaption = " 规章PDF档案下载";
-        else if (langCode === "zh-TW") tableCaption = " 規章PDF檔案下載";
-        else tableCaption = " Regulation PDF Download";
+        let tableCaption = (langCode === "zh") ? " 规章PDF档案下载" :
+                           (langCode === "zh-TW") ? " 規章PDF檔案下載" : " Regulation PDF Download";
 
         let tableHtml = `<div class="rules-table-wrapper"><table class="download-table">
                             <thead><tr><th>${tableCaption}</th><th> 下载</th></tr></thead>
                             <tbody>`;
         files.forEach(file => {
-            let displayName = "";
-            if (langCode === "zh") displayName = file.nameZh;
-            else if (langCode === "zh-TW") displayName = file.nameZhTw;
-            else displayName = file.nameEn;
+            let displayName = (langCode === "zh") ? file.nameZh :
+                              (langCode === "zh-TW") ? file.nameZhTw : file.nameEn;
             const pdfPath = `rules_scl/${file.pdfName}`;
             tableHtml += `
                 <tr>
@@ -544,34 +696,73 @@
         return tableHtml;
     }
 
-    
+    // ============================================================
+    //  右侧 DOCX 下载映射 (原功能)
+    // ============================================================
     const docxDownloadMap = [
-        { path: "rules_scl/self_criticism_form-sc.docx", defaultName: "self_criticism_form-sc.docx" },   
-        { path: "rules_scl/msaf.docx", defaultName: "msaf.docx" },         
-        { path: "rules_scl/reportletter.docx", defaultName: "reportletter.docx" },         
-        
+        { path: "rules_scl/self_criticism_form-sc.docx", defaultName: "self_criticism_form-sc.docx" },
+        { path: "rules_scl/msaf.docx", defaultName: "msaf.docx" },
+        { path: "rules_scl/reportletter.docx", defaultName: "reportletter.docx" },
     ];
 
-    
+    // ============================================================
+    //  参考文章数据 (四个，已实际填充)
+    // ============================================================
+    const articles = [
+        {
+            id: 1,
+            title: "解读SRG民事规定.pdf",
+            desc: "本文件详细阐释了SRG民事规定中的核心条款，涵盖财产权益、合同纠纷、玩家间责任划分等内容，是每位玩家的必备参考。",
+            img: "rules_scl/aa/cc_aa.jpg",
+            pdf: "rules_scl/aa/解读SRG民事规定.pdf"
+        },
+        {
+            id: 2,
+            title: "解读SRG玩家行为守则.pdf",
+            desc: "深入剖析玩家行为守则，包括日常行为规范、禁限事项、违规等级划分及对应的处理流程，帮助玩家更好地遵守规则。",
+            img: "rules_scl/aa/cp_aa.jpg",
+            pdf: "rules_scl/aa/解读SRG玩家行为守则.pdf"
+        },
+        {
+            id: 3,
+            title: "SRG土地所有权制度研究",
+            desc: "该体系在形式上确立了先占取得、圈地公示、登记对抗等基础制度，同时在实质上通过公共利益限制、相邻关系义务、除斥期间规则等机制对所有权权能施加了系统性约束。本文基于两部规范性文件的条文与释义，从取得要件、权能范围、变动规则、消灭事由及程序保障五个维度展开分析，旨在揭示该制度运作的内在逻辑与玩家须承担的程序性风险。",
+            img: "rules_scl/aa/rolos.jpg",
+            pdf: "rules_scl/aa/SRG土地所有权制度研究.pdf"
+        },
+        {
+            id: 4,
+            title: "SRG红石生电机器制度研究",
+            desc: "该制度以服务器整体运算资源（TPS）为客观入罪门槛，以行为人主观归责状态为处罚层级划分依据，同时设置了不作为犯、加重情节、自首减免及临时处分等程序性机制。本文从构成要件、归责体系、刑罚量处、竞合关系及程序保障五个维度展开分析，旨在揭示生电类玩家须遵守的技术规范边界与法律风险节点。",
+            img: "rules_scl/aa/rrsrapm.jpg",
+            pdf: "rules_scl/aa/SRG红石生电机器管制制度研究.pdf"
+        }
+    ];
+
+    // ============================================================
+    //  渲染右侧小框 (将第二个section替换为参考文章链接)
+    // ============================================================
     function renderRightColumn(data) {
         let rightHTML = '';
         data.right.sections.forEach((section, secIdx) => {
             rightHTML += `<div class="info-card"><h3>${section.title}</h3><ul>`;
             if (secIdx === 0) {
-                
+                // 第一个section：使用原有的docx映射
                 section.items.forEach((item, idx) => {
                     const map = docxDownloadMap[idx];
                     if (map) {
                         rightHTML += `<li><a href="${map.path}" download="${map.defaultName}">${item}</a></li>`;
                     } else {
-                        
                         rightHTML += `<li>${item}</li>`;
                     }
                 });
             } else {
-                
-                section.items.forEach(item => {
-                    rightHTML += `<li>${item}</li>`;
+                // 第二个section：替换为参考文章的PDF下载链接 (使用articles数据)
+                articles.forEach(article => {
+                    // 提取显示名称（去掉.pdf后缀，保留完整标题）
+                    let displayName = article.title;
+                    // 如果标题以.pdf结尾，可保留，也可去掉，这里保留原样
+                    rightHTML += `<li><a href="${article.pdf}" download="${article.pdf.split('/').pop()}">${displayName}</a></li>`;
                 });
             }
             rightHTML += `</ul></div>`;
@@ -579,52 +770,113 @@
         return rightHTML;
     }
 
-    
+    // ============================================================
+    //  渲染左侧大框 (整合 PDF表格 + 参考文章)
+    // ============================================================
     function renderLanguage(langCode) {
         const data = LANGUAGE_DATA[langCode];
         if (!data) return;
 
-        
-        const siteNameElem = document.getElementById('siteNameOverlay');
-        if (siteNameElem) siteNameElem.innerText = data.siteName;
+        // 更新横幅标题
+        document.getElementById('siteNameOverlay').innerText = data.siteName;
 
-        
+        // 构造左侧内容
         let leftHTML = `<a href="index.html" class="back-home-btn">${data.backBtn}</a>`;
         leftHTML += `<h2>${data.left.title}</h2>`;
         data.left.paragraphs.forEach(para => {
             leftHTML += `<p>${para}</p>`;
         });
+        // PDF表格
         leftHTML += generatePdfTable(langCode);
+
+        // ---- 添加分界线 ----
+        leftHTML += `<hr class="ref-divider">`;
+
+        // ---- 参考文章模块 ----
+        leftHTML += `<div class="ref-title">· 参考文章</div>`;
+        leftHTML += `<div class="ref-grid">`;
+        articles.forEach((article, idx) => {
+            leftHTML += `
+                <div class="ref-card" data-article-index="${idx}">
+                    <img src="${article.img}" alt="${article.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 150%22%3E%3Crect width=%22100%22 height=%22150%22 fill=%22%23c9e3d4%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2212%22 fill=%22%23366b4d%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📄%3C/text%3E%3C/svg%3E'">
+                    <div class="ref-label">${article.title}</div>
+                </div>
+            `;
+        });
+        leftHTML += `</div>`;
+
         document.getElementById('leftBigContent').innerHTML = leftHTML;
 
-        
+        // ---- 绑定卡片点击事件 (委托) ----
+        const leftBox = document.getElementById('leftBigContent');
+        leftBox.querySelectorAll('.ref-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const idx = parseInt(this.dataset.articleIndex);
+                if (!isNaN(idx) && articles[idx]) {
+                    openModal(articles[idx]);
+                }
+            });
+        });
+
+        // 渲染右侧 (此时第二个section已自动使用articles)
         const rightHTML = renderRightColumn(data);
         document.getElementById('rightSmallContent').innerHTML = rightHTML;
 
-        
-        const langBtns = document.querySelectorAll('.lang-btn');
-        langBtns.forEach(btn => {
+        // 高亮语言按钮
+        document.querySelectorAll('.lang-btn').forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');
             if (btnLang === langCode) btn.classList.add('active');
             else btn.classList.remove('active');
         });
     }
 
-    
+    // ============================================================
+    //  模态框控制
+    // ============================================================
+    const modal = document.getElementById('articleModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalDownload = document.getElementById('modalDownloadBtn');
+    const modalClose = document.getElementById('modalCloseBtn');
+
+    function openModal(article) {
+        modalImg.src = article.img;
+        modalImg.alt = article.title;
+        modalTitle.textContent = article.title;
+        modalDesc.textContent = article.desc;
+        modalDownload.href = article.pdf;
+        modalDownload.download = article.pdf.split('/').pop();
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+    }
+
+    // 事件绑定
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // ============================================================
+    //  语言偏好检测 & 初始化
+    // ============================================================
     function detectLanguageFromPrevious() {
         let savedLang = localStorage.getItem('srg_language_pref');
         if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
-            console.log(`[SRG] 检测到 localStorage 语言偏好 (来自上一个网页设定): ${savedLang}`);
             return savedLang;
         }
         const urlParams = new URLSearchParams(window.location.search);
         const urlLang = urlParams.get('lang');
         if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
-            console.log(`[SRG] 从URL参数获取语言: ${urlLang}`);
             localStorage.setItem('srg_language_pref', urlLang);
             return urlLang;
         }
-        console.log('[SRG] 未检测到上一个网页语言设定，使用默认简体中文');
         return 'zh';
     }
 
@@ -637,9 +889,8 @@
         if (updateStorage) {
             localStorage.setItem('srg_language_pref', currentLang);
         }
-        if (langCode === 'zh') document.documentElement.lang = 'zh-CN';
-        else if (langCode === 'zh-TW') document.documentElement.lang = 'zh-TW';
-        else if (langCode === 'en') document.documentElement.lang = 'en';
+        document.documentElement.lang = (langCode === 'zh') ? 'zh-CN' :
+                                        (langCode === 'zh-TW') ? 'zh-TW' : 'en';
     }
 
     function initLanguageByPrevious() {
@@ -648,12 +899,13 @@
         setLanguage(initialLang, true);
     }
 
-    
+    // ============================================================
+    //  绑定语言切换事件
+    // ============================================================
     function bindEvents() {
-        const langBtns = document.querySelectorAll('.lang-btn');
-        langBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const newLang = btn.getAttribute('data-lang');
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const newLang = this.getAttribute('data-lang');
                 if (newLang && LANGUAGE_DATA[newLang]) {
                     setLanguage(newLang, true);
                 }
@@ -661,7 +913,9 @@
         });
     }
 
-    
+    // ============================================================
+    //  处理 Banner 图片占位
+    // ============================================================
     function handlePlaceholderImage() {
         const bannerImg = document.querySelector('.hero-banner img');
         if (bannerImg) {
@@ -674,11 +928,14 @@
         }
     }
 
+    // ============================================================
+    //  启动
+    // ============================================================
     window.addEventListener('DOMContentLoaded', () => {
         initLanguageByPrevious();
         bindEvents();
         handlePlaceholderImage();
-        console.log("%c SRG 桃源服规 · 统一多语言 \nPDF路径已指向 rules_scl/ 内指定文件; 右侧docx已添加下载链接", "color: #2f6e47; font-size: 14px; font-family: monospace;");
+        console.log("%c SRG 服规 · 已添加「参考文章」模块 (四篇文章，点击弹窗) ", "color: #2f6e47; font-size: 14px; font-family: monospace;");
     });
 </script>
 </body>
