@@ -1132,7 +1132,7 @@
             );
 
             const vFOV = camera.fov * (Math.PI / 180);
-            const D = (boundingRadius / Math.sin(vFOV / 2)) * 1.02;
+            const D = (boundingRadius / Math.tan(vFOV / 2)) * 0.98;
 
             camera.position.set(D * 0.7, targetY + D * 0.25, D * 0.7);
             controls.update();
