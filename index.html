@@ -24,7 +24,7 @@
 
         body, button, input, textarea, .y2k-container, .nav-list li a, .vintage-computer, .mid-box, .legal-statement, .share-box,
         .lang-global-btn, .marquee-content, .sidebar-badge, .update-box h3, .info-placeholder h3, .mascot-intro-box h3,
-        .welcome-area h2, .share-title, .copy-btn, .footer-right, .clock, .ad-badge, .guestbook-box, .message-item, .guestbook-form input, .guestbook-form textarea {
+        .welcome-area h2, .share-title, .copy-btn, .footer-right, .clock, .ad-badge {
             font-family: 'Unifont', 'Press Start 2P', 'VT323', monospace;
         }
 
@@ -527,119 +527,6 @@
             grid-template-columns: 4fr 1fr;
             gap: 24px;
         }
-        .guestbook-box {
-            background: #e5f0ff;
-            border: 2px solid #4075a0;
-            padding: 12px 15px;
-            box-shadow: inset 0 0 0 2px #fff9e8, 3px 3px 0 #1f5379;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-height: 380px;
-            position: relative;
-        }
-        .guestbook-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #8aaccc;
-            padding-bottom: 6px;
-        }
-        .guestbook-header h3 {
-            font-size: 0.9rem;
-            margin: 0;
-        }
-        .review-btn {
-            background: #c0a06b;
-            border: 1px outset #e7cfa1;
-            font-size: 0.6rem;
-            padding: 2px 8px;
-            cursor: pointer;
-            font-family: monospace;
-        }
-        .message-list {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 12px;
-            padding-right: 5px;
-            font-size: 0.75rem;
-            scrollbar-width: thin;
-        }
-        .message-item {
-            background: #f9fef7;
-            margin: 8px 0;
-            padding: 6px;
-            border-left: 4px solid #6f9e6f;
-            position: relative;
-        }
-        .message-name {
-            font-weight: bold;
-            color: #1a5b83;
-        }
-        .message-date {
-            font-size: 0.65rem;
-            color: #6f8eaa;
-            margin-left: 10px;
-        }
-        .message-content {
-            margin-top: 4px;
-            word-break: break-word;
-        }
-        .delete-msg-btn {
-            position: absolute;
-            top: 4px;
-            right: 6px;
-            background: #cc8866;
-            color: white;
-            border: none;
-            font-size: 0.6rem;
-            cursor: pointer;
-            padding: 0 4px;
-            display: none;
-        }
-        .delete-msg-btn:hover {
-            background: #aa4422;
-        }
-        .guestbook-form {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-            border-top: 1px dotted #8fb4d0;
-            padding-top: 10px;
-        }
-        .guestbook-form input, .guestbook-form textarea {
-            background: #fffef7;
-            border: 1px solid #7a9cba;
-            padding: 5px;
-            font-size: 0.7rem;
-        }
-        .guestbook-form input {
-            flex: 1;
-        }
-        .guestbook-form textarea {
-            flex: 2;
-            resize: vertical;
-        }
-        .guestbook-form button {
-            background: #7c9f6e;
-            border: 1px outset #b6cfaa;
-            color: #2c2e1f;
-            cursor: pointer;
-            padding: 4px 8px;
-        }
-        .message-list::-webkit-scrollbar {
-            width: 5px;
-        }
-        .message-list::-webkit-scrollbar-track {
-            background: #d9e2ef;
-        }
-        .message-list::-webkit-scrollbar-thumb {
-            background: #6f9e9e;
-            border-radius: 3px;
-        }
-
         .share-box {
             background: #ffe9cf;
             border: 3px ridge #c29a6b;
@@ -870,25 +757,14 @@
         </div>
     </div>
 
-    <!-- 留言板區域：左側無框吉祥物 -->
+    <!-- 留言板区域（开发中） -->
     <div class="double-wrapper">
         <div class="guestbook-left-mascot">
             <img src="image/srg_chan/aaaa.png" alt="留言板吉祥物">
         </div>
         <div class="double-box">
-            <div class="guestbook-box" id="guestbookBox">
-                <div class="guestbook-header">
-                    <h3>📝 訪客留言板</h3>
-                    <button class="review-btn" id="reviewBtn">🔍 審查</button>
-                </div>
-                <div class="message-list" id="messageList">
-                    <div style="text-align:center; padding:10px;">載入中...</div>
-                </div>
-                <div class="guestbook-form">
-                    <input type="text" id="msgName" placeholder="暱稱" maxlength="20">
-                    <textarea id="msgContent" placeholder="留言內容" rows="1" maxlength="200"></textarea>
-                    <button id="submitMsg">發佈</button>
-                </div>
+            <div style="display:flex; align-items:center; justify-content:center; height:100%; min-height:200px; background:#e5f0ff; border:2px solid #4075a0; box-shadow:inset 0 0 0 2px #fff9e8, 3px 3px 0 #1f5379;">
+                <span style="font-size:0.9rem; color:#5a7a9a;">开发中</span>
             </div>
             <div class="share-box">
                 <div class="share-title">♥ 分享本站按钮 ♥</div>
@@ -1073,139 +949,6 @@
         if (clockDiv) clockDiv.innerHTML = `<span>${weekdayStr}</span><span>${year}-${month}-${day}</span><span>${hours}:${minutes}:${seconds}</span>`;
     }
 
-    // ======================= 留言板功能（純前端 localStorage） =======================
-    const MAX_MESSAGES = 30;
-    // 審查密碼（簡單 Base64 編碼，實際為 "srg2026"）
-    const ENCODED_PASSWORD = "c3JnMjAyNg==";  // Base64 of "srg2026"
-
-    let isReviewer = false;
-    let authAccount = '';   // 留作備用，但密碼驗證主要用密碼
-
-    function getMessages() {
-        const stored = localStorage.getItem('guestbook_messages');
-        if (stored) {
-            try {
-                return JSON.parse(stored);
-            } catch(e) {
-                return [];
-            }
-        }
-        // 若無留言，添加範例
-        const defaultMessages = [
-            { id: '1', name: 'LK', content: '[测试]早晨！服務器更新測試 :)', date: new Date(Date.now() - 86400000).toISOString().slice(0,16).replace('T',' ') },
-            { id: '2', name: 'Beado', content: '居然有留言板', date: new Date(Date.now() - 172800000).toISOString().slice(0,16).replace('T',' ') }
-        ];
-        localStorage.setItem('guestbook_messages', JSON.stringify(defaultMessages));
-        return defaultMessages;
-    }
-
-    function saveMessages(messages) {
-        localStorage.setItem('guestbook_messages', JSON.stringify(messages));
-    }
-
-    function renderMessages(messages) {
-        const container = document.getElementById('messageList');
-        if (!messages.length) {
-            container.innerHTML = '<div style="text-align:center; padding:10px;">暫無留言，第一個留下足跡吧～</div>';
-            return;
-        }
-        let html = '';
-        messages.forEach(msg => {
-            html += `
-                <div class="message-item" data-id="${msg.id}">
-                    <span class="message-name">${escapeHtml(msg.name)}</span>
-                    <span class="message-date">${msg.date}</span>
-                    <div class="message-content">${escapeHtml(msg.content)}</div>
-                    ${isReviewer ? `<button class="delete-msg-btn" data-id="${msg.id}">🗑️</button>` : ''}
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-        if (isReviewer) {
-            document.querySelectorAll('.delete-msg-btn').forEach(btn => {
-                btn.style.display = 'block';
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const msgId = btn.getAttribute('data-id');
-                    deleteMessage(msgId);
-                });
-            });
-        }
-    }
-
-    function loadMessages() {
-        const msgs = getMessages();
-        renderMessages(msgs);
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    function postMessage(name, content) {
-        if (!name.trim() || !content.trim()) {
-            alert('暱稱和內容不能為空');
-            return false;
-        }
-        const messages = getMessages();
-        const newMsg = {
-            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 4),
-            name: name.trim(),
-            content: content.trim(),
-            date: new Date().toISOString().slice(0,16).replace('T',' ')
-        };
-        messages.unshift(newMsg);
-        if (messages.length > MAX_MESSAGES) {
-            messages.pop();
-        }
-        saveMessages(messages);
-        renderMessages(messages);
-        document.getElementById('msgName').value = '';
-        document.getElementById('msgContent').value = '';
-        return true;
-    }
-
-    function deleteMessage(msgId) {
-        if (!isReviewer) {
-            alert('請先通過審查驗證');
-            return;
-        }
-        if (!confirm('確定刪除這條留言嗎？')) return;
-        let messages = getMessages();
-        const newMessages = messages.filter(msg => msg.id !== msgId);
-        if (newMessages.length === messages.length) {
-            alert('留言不存在');
-            return;
-        }
-        saveMessages(newMessages);
-        renderMessages(newMessages);
-    }
-
-    function showReviewDialog() {
-        const pwd = prompt('請輸入審查密碼：');
-        if (pwd === null) return;  // 使用者取消
-        // 驗證密碼：對輸入進行 Base64 編碼後比對
-        try {
-            const inputEncoded = btoa(pwd);
-            if (inputEncoded === ENCODED_PASSWORD) {
-                isReviewer = true;
-                authAccount = 'admin';
-                alert('審查模式已開啟，現在可以刪除留言');
-                loadMessages();  // 重新載入以顯示刪除按鈕
-            } else {
-                alert('密碼錯誤');
-            }
-        } catch(e) {
-            alert('密碼格式錯誤，請重新輸入');
-        }
-    }
-
     // ======================= 初始化函數 =======================
     function init() {
         setLanguage('zh');
@@ -1224,25 +967,10 @@
             });
         });
 
-        // 綁定留言板按鈕
-        const submitBtn = document.getElementById('submitMsg');
-        const reviewBtn = document.getElementById('reviewBtn');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', () => {
-                const name = document.getElementById('msgName').value;
-                const content = document.getElementById('msgContent').value;
-                postMessage(name, content);
-            });
-        }
-        if (reviewBtn) {
-            reviewBtn.addEventListener('click', showReviewDialog);
-        }
-
         // 啟動輪播和時鐘
         startCarousel();
         updateClock();
         setInterval(updateClock, 1000);
-        loadMessages();
 
         // 載入完成後隱藏 loading 遮罩
         window.addEventListener('load', () => {
