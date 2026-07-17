@@ -1121,10 +1121,20 @@
             model.position.sub(center);
             model.position.y += size.y / 2;
 
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const idealDistance = maxDim * 1.15;
-            camera.position.set(idealDistance * 0.7, size.y * 0.6, idealDistance * 0.7);
-            controls.target.set(0, size.y * 0.35, 0);
+            const targetY = size.y * 0.35;
+            controls.target.set(0, targetY, 0);
+
+            const maxYFromTarget = Math.max(size.y - targetY, targetY);
+            const boundingRadius = Math.sqrt(
+                Math.pow(size.x / 2, 2) +
+                Math.pow(maxYFromTarget, 2) +
+                Math.pow(size.z / 2, 2)
+            );
+
+            const vFOV = camera.fov * (Math.PI / 180);
+            const D = (boundingRadius / Math.sin(vFOV / 2)) * 1.02;
+
+            camera.position.set(D * 0.7, targetY + D * 0.25, D * 0.7);
             controls.update();
 
             model.traverse((child) => {
