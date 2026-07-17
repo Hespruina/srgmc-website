@@ -374,14 +374,25 @@
             flex: 1;
             text-align: center;
             min-width: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .mascot-png {
+        #mascot3d {
+            width: 100%;
             height: 280px;
-            width: auto;
-            max-width: 100%;
             background: transparent;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: grab;
+        }
+        #mascot3d:active {
+            cursor: grabbing;
+        }
+        #mascot3d canvas {
             display: block;
-            margin: 0 auto;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         .mascot-flex {
@@ -623,7 +634,7 @@
                 height: 100px;
                 margin: 0 auto;
             }
-            .mascot-png {
+            #mascot3d {
                 height: 200px;
             }
             .welcome-title-badge {
@@ -711,7 +722,7 @@
                     <div class="welcome-text" id="welcomeText"></div>
                 </div>
                 <div class="welcome-mascot">
-                    <img class="mascot-png" id="mascotPng" src="image/srg_chan/welcome.png" alt="吉祥物SRG娘">
+                    <div id="mascot3d"></div>
                 </div>
             </div>
             <div class="update-box">
@@ -1022,6 +1033,132 @@
         if (carouselInterval) clearInterval(carouselInterval);
     });
     init();
+</script>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+    const container = document.getElementById('mascot3d');
+    if (container) {
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(2, 1.2, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 4.5;
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableRotate = false;
+    controls.target.set(0, 0.4, 0);
+    controls.update();
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    scene.add(ambientLight);
+
+    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xcccccc, 1.5);
+    scene.add(hemisphereLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
+    keyLight.position.set(3, 5, 3);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 50;
+    keyLight.shadow.bias = -0.0001;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0xccddff, 1.5);
+    fillLight.position.set(-2, 1, -2);
+    scene.add(fillLight);
+
+    const backLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    backLight.position.set(-1, 0.5, -3);
+    scene.add(backLight);
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    dracoLoader.preload();
+
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
+
+    const modelPath = 'assets/srg_niang.glb';
+
+    loader.load(
+        modelPath,
+        (gltf) => {
+            const model = gltf.scene;
+
+            const box = new THREE.Box3().setFromObject(model);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+
+            model.position.sub(center);
+            model.position.y += size.y / 2;
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const idealDistance = maxDim * 1.15;
+            camera.position.set(idealDistance * 0.7, size.y * 0.6, idealDistance * 0.7);
+            controls.target.set(0, size.y * 0.35, 0);
+            controls.update();
+
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+
+            scene.add(model);
+        },
+        undefined,
+        (error) => {
+            console.error('模型加载失败:', error);
+        }
+    );
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w > 0 && h > 0) {
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        }
+    });
+    }
 </script>
 </body>
 </html>

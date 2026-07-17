@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>纯白背景 · 3D模型旋转展示</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background-color: #ffffff; /* 纯白背景 */
+    }
+    #container {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+    /* 加载提示 - 简洁现代 */
+    #loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #333333;
+      font-size: 16px;
+      z-index: 10;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 24px 32px;
+      border-radius: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      letter-spacing: 0.5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .loader {
+      width: 28px;
+      height: 28px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-top: 3px solid #222;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* 操作提示 - 底部轻量级 */
+    #hint {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #777;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 10px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      z-index: 10;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    #hint.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  
+  <div id="loading">
+    <div class="loader"></div>
+    <span>模型加载中...</span>
+  </div>
+  
+  <div id="hint">
+    🖱️ 拖拽旋转视角 · 滚轮缩放
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+    // ---------- 初始化场景、相机、渲染器 ----------
+    const container = document.getElementById('container');
+    
+    // 场景：纯白背景，通过CSS设置body为白色，这里场景背景设为白色也可（但保留透明或白色均可）
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff); // 纯白背景
+    
+    // 相机：视角稍近，突出模型
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(3.5, 1.8, 4.5);
+    
+    // 渲染器：开启抗锯齿，保留阴影映射（但地板移除后阴影无接收体，可关闭阴影以提高性能，但保留无妨）
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: false 
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // 限制过高像素比以防性能问题
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true; // 阴影依然开启，但模型自身投射阴影到无地面不影响视觉效果
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // ---------- 控制器：提高自动旋转速度 ----------
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 2.8; // 提高旋转速度 (默认2.0，这里设为2.8，明显更快)
+    controls.minDistance = 1.2;
+    controls.maxDistance = 10;
+    controls.target.set(0, 0.4, 0);
+    controls.update();
+    
+    // 允许用户交互时暂时停止自动旋转？不，保持自动旋转始终开启，用户拖拽时自动旋转会暂停（OrbitControls默认行为）
+    // 但为了体验，用户停止交互后自动旋转会恢复。
+
+    // ---------- 光照设置：明亮且柔和，突出模型细节 ----------
+    // 环境光提供基础亮度
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
+    scene.add(ambientLight);
+    
+    // 半球光模拟自然环境
+    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xcccccc, 1.6);
+    scene.add(hemisphereLight);
+    
+    // 主光源方向光，产生立体感和阴影
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.5);
+    keyLight.position.set(5, 7, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 50;
+    keyLight.shadow.camera.left = -5;
+    keyLight.shadow.camera.right = 5;
+    keyLight.shadow.camera.top = 5;
+    keyLight.shadow.camera.bottom = -3;
+    keyLight.shadow.bias = -0.0001;
+    keyLight.shadow.normalBias = 0.02;
+    scene.add(keyLight);
+    
+    // 辅助补光，消除暗部过黑
+    const fillLight1 = new THREE.DirectionalLight(0xccddff, 1.8);
+    fillLight1.position.set(-3, 1, -2);
+    scene.add(fillLight1);
+    
+    const fillLight2 = new THREE.DirectionalLight(0xffccaa, 2.2);
+    fillLight2.position.set(1, -0.5, -3);
+    scene.add(fillLight2);
+    
+    // 背光轮廓光
+    const backLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    backLight.position.set(-1, 0.5, -4);
+    scene.add(backLight);
+
+    // 注意：完全移除地面（底板），不添加任何平面或网格
+
+    // ---------- 设置 Draco 加载器 (用于压缩模型) ----------
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    dracoLoader.preload();
+    
+    // ---------- 加载 GLB 模型 ----------
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
+    
+    // 模型路径 (请确保此路径下的文件存在)
+    const modelPath = 'assets/srg_niang.glb';
+    
+    console.log('开始加载模型:', modelPath);
+    
+    // 获取UI元素
+    const loadingElement = document.getElementById('loading');
+    const hintElement = document.getElementById('hint');
+    
+    loader.load(
+      modelPath,
+      (gltf) => {
+        console.log('模型加载成功');
+        const model = gltf.scene;
+        
+        // 计算模型包围盒，用于自动调整位置和相机视角
+        const box = new THREE.Box3().setFromObject(model);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        
+        console.log('模型尺寸:', size.x.toFixed(2), size.y.toFixed(2), size.z.toFixed(2));
+        
+        // 将模型原点居中，并稍微上移使视觉中心合适
+        model.position.sub(center);
+        // 让模型底部大致位于世界坐标y=0附近，或者根据尺寸调整
+        model.position.y += size.y / 2; 
+        
+        // 根据模型大小调整相机距离和控制器目标
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const idealDistance = maxDim * 2.2;
+        camera.position.set(idealDistance * 0.75, size.y * 0.9, idealDistance);
+        controls.target.set(0, size.y * 0.35, 0);
+        controls.update();
+        
+        // 遍历模型，启用阴影投射和接收 (虽然无地面接收，但保留投射阴影以备未来扩展)
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            
+            // 可选：优化材质，确保在白色背景下显示良好
+            if (child.material) {
+              // 处理可能的多材质情况
+              const materials = Array.isArray(child.material) ? child.material : [child.material];
+              materials.forEach(mat => {
+                if (mat) {
+                  // 确保材质渲染顺序等，无需特殊处理
+                  mat.needsUpdate = true;
+                }
+              });
+            }
+          }
+        });
+        
+        scene.add(model);
+        
+        // 隐藏加载提示，显示操作提示
+        if (loadingElement) {
+          loadingElement.style.display = 'none';
+        }
+        if (hintElement) {
+          hintElement.classList.add('visible');
+        }
+        
+        console.log('模型已添加到场景，旋转速度提升至2.8');
+      },
+      (progress) => {
+        // 加载进度（可选）
+        if (progress.total > 0) {
+          const percent = Math.round((progress.loaded / progress.total) * 100);
+          console.log(`加载进度: ${percent}%`);
+        }
+      },
+      (error) => {
+        console.error('模型加载失败:', error);
+        if (loadingElement) {
+          loadingElement.innerHTML = '<span style="color: #d32f2f;">❌ 模型加载失败，请检查路径或网络</span>';
+        }
+      }
+    );
+
+    // ---------- 动画循环 ----------
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      // 更新控制器 (包含自动旋转)
+      controls.update();
+      
+      // 渲染场景
+      renderer.render(scene, camera);
+    }
+    
+    animate();
+    
+    // ---------- 窗口大小自适应 ----------
+    window.addEventListener('resize', onWindowResize, false);
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    
+    // 几秒后淡化提示（但保留可读性）
+    setTimeout(() => {
+      if (hintElement && hintElement.classList.contains('visible')) {
+        hintElement.style.opacity = '0';
+        hintElement.style.transition = 'opacity 1s ease';
+        // 完全透明后移除visible类，但保留元素
+        setTimeout(() => {
+          if (hintElement) {
+            hintElement.classList.remove('visible');
+            hintElement.style.opacity = '1'; // 重置以备再次显示
+          }
+        }, 1000);
+      }
+    }, 8000);
+    
+    console.log('初始化完成，纯白背景，模型旋转展示中。');
+  </script>
+</body>
+</html>
