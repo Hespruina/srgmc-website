@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SRG桃源服务器 | 服规制度</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        
+        @font-face {
+            font-family: 'UnifontPixel';
+            src: url('font/Unifont13.0.01.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'UnifontPixel', 'Courier New', 'VT323', 'Fira Code', 'Monaco', monospace;
+            background-color: #1f6e4a;
+            min-height: 100vh;
+            padding: 24px 32px;
+            position: relative;
+        }
+
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle at 15px 15px, #b3ffcf 2.5px, transparent 2.5px),
+                              radial-gradient(circle at 45px 35px, #8cf0a7 1.8px, transparent 1.8px);
+            background-size: 50px 50px, 80px 80px;
+            background-color: #c9ffdb;
+            background-repeat: repeat;
+            animation: diagonalMoveLeftUp 18s linear infinite;
+            opacity: 0.68;
+        }
+
+        @keyframes diagonalMoveLeftUp {
+            0% {
+                background-position: 0 0, 0 0;
+            }
+            100% {
+                background-position: -120px -120px, -180px -180px;
+            }
+        }
+
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(235, 255, 238, 0.88);
+            backdrop-filter: blur(2px);
+            border: 4px solid #2f9e62;
+            box-shadow: 12px 12px 0px 0px rgba(28, 65, 43, 0.4);
+            padding: 20px 24px 30px 24px;
+            transition: all 0.2s;
+        }
+
+        hr {
+            border: none;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #328f58, #328f58 10px, #b3e4c4 10px, #b3e4c4 20px);
+            margin: 12px 0;
+        }
+
+        
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 170px;
+            overflow: hidden;
+            border: 3px solid #247a4c;
+            margin-bottom: 28px;
+            background: #5fa07e;
+            box-shadow: 6px 6px 0px #1e462f;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            image-rendering: auto;
+        }
+
+        
+        .site-title-overlay {
+            position: absolute;
+            left: 20px;
+            bottom: 18px;
+            background: rgba(26, 68, 44, 0.85);
+            padding: 6px 16px;
+            border-right: 4px solid #7fe89b;
+            border-bottom: 4px solid #308a54;
+            font-size: 1.7rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-family: 'UnifontPixel', 'Courier New', monospace;
+            text-transform: uppercase;
+            color: #f0ffee;
+            text-shadow: 3px 3px 0 #1f4c2d;
+            backdrop-filter: blur(3px);
+        }
+
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            gap: 28px;
+            margin: 20px 0 25px;
+        }
+
+        
+        .left-bigbox {
+            background: rgba(252, 253, 255, 0.94);
+            border: 3px solid #3b8f60;
+            padding: 22px 24px;
+            box-shadow: 5px 5px 0px #b9ddcb;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .left-bigbox h2 {
+            font-size: 1.9rem;
+            border-left: 12px solid #ffb347;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-family: 'UnifontPixel', 'Courier New', monospace;
+            letter-spacing: 1px;
+            color: #1a5338;
+            text-transform: uppercase;
+        }
+
+        .left-bigbox p {
+            margin-bottom: 18px;
+            color: #1e3f2e;
+        }
+
+        
+        .rules-table-wrapper {
+            margin: 24px 0 12px 0;
+            overflow-x: auto;
+        }
+        .download-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'UnifontPixel', 'Courier New', monospace;
+            background: #f9fef5;
+            border: 2px solid #4e946e;
+            box-shadow: 3px 3px 0 #b5d1c1;
+        }
+        .download-table th, .download-table td {
+            border: 1px solid #7bb692;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .download-table th {
+            background: #c3e3cf;
+            color: #194e33;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .download-table td a {
+            color: #226644;
+            text-decoration: none;
+            background: #e2f0e8;
+            padding: 4px 12px;
+            border: 1px solid #2f7a51;
+            font-weight: bold;
+            transition: 0.05s linear;
+            display: inline-block;
+            font-family: 'UnifontPixel', monospace;
+        }
+        .download-table td a:hover {
+            background: #ffd966;
+            color: #1d452f;
+            border-color: #a5641a;
+            transform: translate(-1px, -1px);
+            box-shadow: 2px 2px 0 #8bb29b;
+        }
+
+        
+        .right-smallbox {
+            background: rgba(248, 252, 255, 0.96);
+            border: 3px solid #419566;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: 5px 5px 0px #93bba7;
+        }
+
+        .info-card {
+            border-bottom: 2px dotted #7fa28b;
+            padding-bottom: 14px;
+        }
+
+        .info-card h3 {
+            font-size: 1.3rem;
+            background: #ddf3e4;
+            display: inline-block;
+            padding: 4px 10px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            border-top: 2px solid #c5ff6e;
+            font-weight: bold;
+            color: #195a37;
+            font-family: 'UnifontPixel', monospace;
+        }
+
+        .info-card ul, .info-card .text-lines {
+            list-style: none;
+            padding-left: 8px;
+        }
+
+        .info-card li {
+            margin: 8px 0;
+            font-size: 0.9rem;
+            padding-left: 20px;
+            position: relative;
+            word-break: break-word;
+        }
+
+        
+        .info-card li a {
+            color: #226644;
+            text-decoration: none;
+            border-bottom: 1px dotted #5b9879;
+            transition: all 0.1s;
+        }
+        .info-card li a:hover {
+            color: #b85c1a;
+            border-bottom-color: #b85c1a;
+            background: #faf0cf;
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+
+        .info-card li::before {
+            content: "📜";
+            position: absolute;
+            left: -2px;
+            top: -1px;
+            font-size: 0.8rem;
+        }
+
+        
+        .back-home-btn {
+            display: inline-block;
+            background: #eef4fc;
+            border: 2px solid #2f8b5b;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 6px 16px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1d5a3b;
+            box-shadow: 2px 2px 0px #8abea1;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .back-home-btn:hover {
+            background: #ffcd94;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #629e7a;
+        }
+
+        
+        .lang-switch {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: #eef4fc;
+            border: 2px solid #2f8b5b;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1d5a3b;
+            box-shadow: 2px 2px 0px #8abea1;
+        }
+
+        .lang-btn.active {
+            background: #ffcd94;
+            border-color: #b85c1a;
+            color: #2e472a;
+            box-shadow: inset 1px 1px 0px #75531e;
+        }
+
+        .lang-btn:hover {
+            background: #cbe4fe;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #629e7a;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.75rem;
+            border-top: 2px solid #7db193;
+            padding-top: 18px;
+            color: #215a3b;
+            letter-spacing: 1px;
+        }
+
+        .blink-pixel {
+            animation: blink 1.2s step-end infinite;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 16px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .hero-banner {
+                height: 130px;
+            }
+            .site-title-overlay {
+                font-size: 1.1rem;
+                bottom: 8px;
+                left: 12px;
+            }
+            .back-home-btn {
+                font-size: 0.8rem;
+                padding: 4px 12px;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #d4ecde;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #468a63;
+            border: 1px solid #aad0bb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="lang-switch">
+        <button class="lang-btn" data-lang="zh">简体中文</button>
+        <button class="lang-btn" data-lang="zh-TW">繁體中文</button>
+        <button class="lang-btn" data-lang="en">ENGLISH</button>
+    </div>
+
+    
+    <div class="hero-banner">
+        
+        <img src="image/CORT1.jpg" alt="SRG Banner" onerror="this.src='https://placehold.co/1200x300/479c6e/white?text=🌿+SRG+服务器+🌿'">
+        
+        <div class="site-title-overlay" id="siteNameOverlay"> 服务器规则</div>
+    </div>
+
+    
+    <div class="content-grid">
+        
+        <div class="left-bigbox" id="leftBigContent">
+            
+        </div>
+
+        
+        <div class="right-smallbox" id="rightSmallContent">
+            
+        </div>
+    </div>
+
+    <footer>
+        <span class="blink-pixel"></span> SRG 桃源服务器·服规 2026 <span class="blink-pixel"></span><br>
+        解释权于桃源岛委员会 | 规则透明 · 公正裁决
+    </footer>
+</div>
+
+<script>
+    
+    
+    const LANGUAGE_DATA = {
+        
+        "zh": {
+            siteName: " 服务器规则",
+            backBtn: "← 返回主页",
+            left: {
+                title: "服务器规定概述",
+                paragraphs: [
+                    "为维护SRG桃源服务器的公平、友善与秩序，特制定本规章。所有进入服务器的玩家默认知悉并遵守本规定，保障每位成员的正常游戏体验。处罚措施从警告、临时封禁到永久封禁，幅度公开透明。",
+                    "领地保护机制、公共设施使用规范、玩家申诉通道及定期活动等非处罚性制度同步生效。服务器管理组保留最终解释权，但所有判罚均依据明文条例，绝不无故问责。",
+                    "请定期查阅规则更新，尊重他人劳动成果，共同构建复和谐社区。任何违规行为都将按照裁量基准进行处理，同时提供完整的复议渠道。"
+                ]
+            },
+            right: {
+                sections: [
+                    {
+                        title: "下载其他文件",
+                        items: ["赦免检讨书表格.docx", "错误封禁申诉书.docx", "神权举报书.docx"]
+                    },
+                    {
+                        title: "SRG规定见解",
+                        items: ["《SRG玩家行为守则》注解", "土地所有权", "第11/2026号违规裁量注解", "毁损财物及破坏问题"]
+                    }
+                ]
+            }
+        },
+        
+        "zh-TW": {
+            siteName: " 伺服器規則",
+            backBtn: "← 返回主頁",
+            left: {
+                title: "伺服器規定概述",
+                paragraphs: [
+                    "為維護SRG桃源伺服器的公平、友善與秩序，特制定本章程。所有進入伺服器的玩家默認知悉並遵守本規定，保障每位成員的正常遊戲體驗。處罰措施從警告、暫時封禁到永久封禁，幅度公開透明。",
+                    "領地保護機制、公共設施使用規範、玩家申訴通道及定期活動等非處罰性制度同步生效。伺服器管理組保留最終解釋權，但所有判罰均依據明文條例，絕不無故問責。",
+                    "請定期查閱規則更新，尊重他人勞動成果，共同構建和諧社區。任何違規行為都將按照裁量基準進行處理，同時提供完整的複議渠道。"
+                ]
+            },
+            right: {
+                sections: [
+                    {
+                        title: "📂 下載其他文件",
+                        items: ["赦免檢討書表格.docx", "錯誤封禁申訴書.docx", "神權舉報書.docx", "領地糾紛調解表.docx"]
+                    },
+                    {
+                        title: "📖 SRG規定見解",
+                        items: ["《SRG玩家行為守則》註解", "土地所有權與開發條例", "第11/2026號違規裁量註解", "毀損財物及輕度破壞問題指引"]
+                    }
+                ]
+            }
+        },
+        
+        "en": {
+            siteName: " Server Rules",
+            backBtn: "← Home",
+            left: {
+                title: "SRG Code Overview",
+                paragraphs: [
+                    "To ensure fairness, friendliness and order on the SRG Taoyuan server, these regulations are established. All players are deemed to know and comply with these rules, guaranteeing a pleasant gaming experience for every member. Penalties range from warnings, temporary bans to permanent bans, with full transparency.",
+                    "Land claim protection, public facility guidelines, player appeal channels and regular events also take effect simultaneously. The administration reserves the right of final interpretation, but all rulings are based on written clauses and never groundless.",
+                    "Please review rule updates regularly, respect others' work, and co-build a retro pixel utopia. Any violation will be handled according to the sanction framework, and a complete review channel is provided."
+                ]
+            },
+            right: {
+                sections: [
+                    {
+                        title: "📂 Download Auxiliary Files",
+                        items: ["Pardon Review Form.docx", "False Ban Appeal.docx", "Authority Abuse Report.docx", "Land Dispute Mediation.docx"]
+                    },
+                    {
+                        title: "📖 SRG Legal Insights",
+                        items: ["Annotations to SRG Player Code of Conduct", "Land Ownership & Development Rules", "Annotations to Decree No. 11/2026", "Guidelines on Property Damage & Minor Griefing"]
+                    }
+                ]
+            }
+        }
+    };
+
+    
+    function generatePdfTable(langCode) {
+        const files = [
+            {
+                pdfName: "srg_criminal_law-sc.pdf",
+                nameZh: "SRG玩家行为守则",
+                nameZhTw: "SRG玩家行爲守則",
+                nameEn: "SRG Criminal Law"
+            },
+            {
+                pdfName: "11-2026-sc.pdf",
+                nameZh: "第11/2026规定（防破坏性机器规定）",
+                nameZhTw: "第11/2026規定（防破壞性機器規定）",
+                nameEn: "Decree No. 11/2026 (Restriction on Destructive Machines)"
+            },
+            {
+                pdfName: "srg_civil_law-sc.pdf",
+                nameZh: "SRG民事规定",
+                nameZhTw: "SRG民事法規",
+                nameEn: "SRG Civil Law"
+            },
+            {
+                pdfName: "pg_c-sc.pdf",
+                nameZh: "玩家公会组织制度 & 公司制度",
+                nameZhTw: "玩家公會組織制度 & 公司制度",
+                nameEn: "Guild & Corporation System Act"
+            }
+        ];
+
+        let tableCaption = "";
+        if (langCode === "zh") tableCaption = " 规章PDF档案下载";
+        else if (langCode === "zh-TW") tableCaption = " 規章PDF檔案下載";
+        else tableCaption = " Regulation PDF Download";
+
+        let tableHtml = `<div class="rules-table-wrapper"><table class="download-table">
+                            <thead><tr><th>${tableCaption}</th><th> 下载</th></tr></thead>
+                            <tbody>`;
+        files.forEach(file => {
+            let displayName = "";
+            if (langCode === "zh") displayName = file.nameZh;
+            else if (langCode === "zh-TW") displayName = file.nameZhTw;
+            else displayName = file.nameEn;
+            const pdfPath = `rules_scl/${file.pdfName}`;
+            tableHtml += `
+                <tr>
+                    <td>${displayName}</td>
+                    <td><a href="${pdfPath}" download="${file.pdfName}"> 获取PDF</a></td>
+                </tr>
+            `;
+        });
+        tableHtml += `</tbody></table></div>`;
+        return tableHtml;
+    }
+
+    
+    const docxDownloadMap = [
+        { path: "rules_scl/self_criticism_form-sc.docx", defaultName: "self_criticism_form-sc.docx" },   
+        { path: "rules_scl/msaf.docx", defaultName: "msaf.docx" },         
+        { path: "rules_scl/reportletter.docx", defaultName: "reportletter.docx" },         
+        
+    ];
+
+    
+    function renderRightColumn(data) {
+        let rightHTML = '';
+        data.right.sections.forEach((section, secIdx) => {
+            rightHTML += `<div class="info-card"><h3>${section.title}</h3><ul>`;
+            if (secIdx === 0) {
+                
+                section.items.forEach((item, idx) => {
+                    const map = docxDownloadMap[idx];
+                    if (map) {
+                        rightHTML += `<li><a href="${map.path}" download="${map.defaultName}">${item}</a></li>`;
+                    } else {
+                        
+                        rightHTML += `<li>${item}</li>`;
+                    }
+                });
+            } else {
+                
+                section.items.forEach(item => {
+                    rightHTML += `<li>${item}</li>`;
+                });
+            }
+            rightHTML += `</ul></div>`;
+        });
+        return rightHTML;
+    }
+
+    
+    function renderLanguage(langCode) {
+        const data = LANGUAGE_DATA[langCode];
+        if (!data) return;
+
+        
+        const siteNameElem = document.getElementById('siteNameOverlay');
+        if (siteNameElem) siteNameElem.innerText = data.siteName;
+
+        
+        let leftHTML = `<a href="index.html" class="back-home-btn">${data.backBtn}</a>`;
+        leftHTML += `<h2>${data.left.title}</h2>`;
+        data.left.paragraphs.forEach(para => {
+            leftHTML += `<p>${para}</p>`;
+        });
+        leftHTML += generatePdfTable(langCode);
+        document.getElementById('leftBigContent').innerHTML = leftHTML;
+
+        
+        const rightHTML = renderRightColumn(data);
+        document.getElementById('rightSmallContent').innerHTML = rightHTML;
+
+        
+        const langBtns = document.querySelectorAll('.lang-btn');
+        langBtns.forEach(btn => {
+            const btnLang = btn.getAttribute('data-lang');
+            if (btnLang === langCode) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    
+    function detectLanguageFromPrevious() {
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
+            console.log(`[SRG] 检测到 localStorage 语言偏好 (来自上一个网页设定): ${savedLang}`);
+            return savedLang;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
+            console.log(`[SRG] 从URL参数获取语言: ${urlLang}`);
+            localStorage.setItem('srg_language_pref', urlLang);
+            return urlLang;
+        }
+        console.log('[SRG] 未检测到上一个网页语言设定，使用默认简体中文');
+        return 'zh';
+    }
+
+    let currentLang = 'zh';
+
+    function setLanguage(langCode, updateStorage = true) {
+        if (!LANGUAGE_DATA[langCode]) return;
+        currentLang = langCode;
+        renderLanguage(currentLang);
+        if (updateStorage) {
+            localStorage.setItem('srg_language_pref', currentLang);
+        }
+        if (langCode === 'zh') document.documentElement.lang = 'zh-CN';
+        else if (langCode === 'zh-TW') document.documentElement.lang = 'zh-TW';
+        else if (langCode === 'en') document.documentElement.lang = 'en';
+    }
+
+    function initLanguageByPrevious() {
+        let initialLang = detectLanguageFromPrevious();
+        if (!LANGUAGE_DATA[initialLang]) initialLang = 'zh';
+        setLanguage(initialLang, true);
+    }
+
+    
+    function bindEvents() {
+        const langBtns = document.querySelectorAll('.lang-btn');
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newLang = btn.getAttribute('data-lang');
+                if (newLang && LANGUAGE_DATA[newLang]) {
+                    setLanguage(newLang, true);
+                }
+            });
+        });
+    }
+
+    
+    function handlePlaceholderImage() {
+        const bannerImg = document.querySelector('.hero-banner img');
+        if (bannerImg) {
+            bannerImg.onerror = function() {
+                if (!this.dataset.fallbackSet) {
+                    this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200'%3E%3Crect width='1200' height='200' fill='%233d8b62'/%3E%3Ctext x='50%25' y='50%25' font-size='20' font-family='monospace' fill='%23f0f7e6' text-anchor='middle' dy='.3em'%3E🌿 SRG 服务器 · 替换图片至 image/CORT1.jpg %3C/text%3E%3C/svg%3E";
+                    this.dataset.fallbackSet = "true";
+                }
+            };
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initLanguageByPrevious();
+        bindEvents();
+        handlePlaceholderImage();
+        console.log("%c SRG 桃源服规 · 统一多语言 \nPDF路径已指向 rules_scl/ 内指定文件; 右侧docx已添加下载链接", "color: #2f6e47; font-size: 14px; font-family: monospace;");
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SRG桃源服务器 | 新手指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        @font-face {
+            font-family: 'UnifontPixel';
+            src: url('font/Unifont13.0.01.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'UnifontPixel', 'Courier New', 'VT323', monospace;
+            background-color: #ffeab8;
+            min-height: 100vh;
+            padding: 24px 32px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle at 20px 20px, #f0d3a0 12px, transparent 12px);
+            background-size: 80px 80px;
+            background-color: #fff6cf;
+            background-repeat: repeat;
+            animation: diagonalMoveLeftUp 22s linear infinite;
+            opacity: 0.65;
+        }
+
+        @keyframes diagonalMoveLeftUp {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -200px -200px;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(248, 250, 255, 0.92);
+            backdrop-filter: blur(3px);
+            border: 4px solid #c9ac5d;
+            box-shadow: 12px 12px 0px 0px rgba(47, 79, 109, 0.3);
+            padding: 20px 24px 30px 24px;
+            transition: all 0.2s;
+        }
+
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 170px;
+            overflow: hidden;
+            border: 3px solid #edc952;
+            margin-bottom: 28px;
+            background: #e0d285;
+            box-shadow: 6px 6px 0px #4f381e;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            image-rendering: auto;
+        }
+
+        .site-title-overlay {
+            position: absolute;
+            left: 20px;
+            bottom: 18px;
+            background: rgba(55, 43, 17, 0.85);
+            padding: 6px 18px;
+            border-right: 4px solid #ffd966;
+            border-bottom: 4px solid #ffb347;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-family: 'UnifontPixel', monospace;
+            text-transform: uppercase;
+            color: #f0fcff;
+            text-shadow: 3px 3px 0 #1f3f5c;
+            backdrop-filter: blur(4px);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            gap: 28px;
+            margin: 20px 0 25px;
+        }
+
+        .left-bigbox {
+            background: rgba(252, 253, 255, 0.94);
+            border: 3px solid #edc952;
+            padding: 22px 24px;
+            box-shadow: 5px 5px 0px #edd9b8;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .left-bigbox h2 {
+            font-size: 1.9rem;
+            border-left: 12px solid #ffb347;
+            padding-left: 15px;
+            margin: 20px 0 15px 0;
+            color: #1e4a6e;
+            font-family: 'UnifontPixel', monospace;
+        }
+        .left-bigbox h3 {
+            font-size: 1.5rem;
+            border-left: 8px solid #ffbc6e;
+            padding-left: 12px;
+            margin: 18px 0 12px 0;
+            color: #1a5a7a;
+        }
+        .left-bigbox p {
+            margin-bottom: 14px;
+            color: #1e3b4f;
+        }
+        .left-bigbox ul, .left-bigbox ol {
+            margin: 8px 0 12px 30px;
+            color: #1e3b4f;
+        }
+        .left-bigbox li {
+            margin: 6px 0;
+        }
+        .left-bigbox .note {
+            background: #eef4fb;
+            border-left: 4px solid #ffb347;
+            padding: 8px 15px;
+            margin: 15px 0;
+        }
+        .cmd-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #f9fef5;
+            border: 2px solid #c49b7b;
+            font-size: 0.9rem;
+        }
+        .cmd-table th, .cmd-table td {
+            border: 1px solid #dcc79c;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        .cmd-table th {
+            background: #ffeacd;
+            color: #1f557a;
+        }
+
+        .back-home-btn {
+            display: inline-block;
+            background: #fffbe6;
+            border: 2px solid #b09549;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #7e601f;
+            box-shadow: 2px 2px 0px #ddc993;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .back-home-btn:hover {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #c4b17b;
+        }
+
+        .right-smallbox {
+            background: rgba(248, 252, 255, 0.96);
+            border: 3px solid #edc952;
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 5px 5px 0px #e0d1a1;
+            position: sticky;
+            top: 30px;
+            align-self: start;
+        }
+        .toc-title {
+            font-size: 1.4rem;
+            background: #ffeacd;
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 12px;
+            border-top: 2px solid #ffbc6e;
+            color: #654018;
+        }
+        .toc-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc-list li {
+            margin: 12px 0;
+            border-bottom: 1px dotted #d4ba8f;
+            padding-bottom: 6px;
+        }
+        .toc-list a {
+            color: #654018;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.1s;
+            display: block;
+        }
+        .toc-list a:hover {
+            color: #cc7b2c;
+            transform: translateX(4px);
+            text-shadow: 1px 1px 0 #eef4ff;
+        }
+
+        .lang-switch {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            background: #fffae6;
+            border: 2px solid #b08c49;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #71491c;
+            box-shadow: 2px 2px 0px #ddc793;
+        }
+        .lang-btn.active {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            box-shadow: inset 1px 1px 0px #ad6d2a;
+        }
+        .lang-btn:hover {
+            background: #fee3b5;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #c4ac7b;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.75rem;
+            border-top: 2px solid #dccc9c;
+            padding-top: 18px;
+            color: #654018;
+            letter-spacing: 1px;
+        }
+        .blink-pixel {
+            animation: blink 1.2s step-end infinite;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 860px) {
+            body { padding: 16px; }
+            .content-grid { grid-template-columns: 1fr; gap: 24px; }
+            .hero-banner { height: 130px; }
+            .site-title-overlay { font-size: 1.2rem; bottom: 8px; left: 12px; }
+            .right-smallbox { position: static; }
+        }
+        ::-webkit-scrollbar { width: 12px; background: #f0e4ca; }
+        ::-webkit-scrollbar-thumb { background: #a08351; border: 1px solid #f0e3bf; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="lang-switch">
+        <button class="lang-btn" data-lang="zh">简体中文</button>
+        <button class="lang-btn" data-lang="zh-TW">繁體中文</button>
+        <button class="lang-btn" data-lang="en">ENGLISH</button>
+    </div>
+
+    <div class="hero-banner">
+        <img src="image/SUN.jpg" alt="Y2K Banner" onerror="this.src='https://placehold.co/1200x300/6aa9d9/white?text=📸+Replace+Me+in+root'">
+        <div class="site-title-overlay" id="siteNameOverlay">✦ SRG 桃源指南 ✦</div>
+    </div>
+
+    <div class="content-grid">
+        <div class="left-bigbox" id="leftGuideContent">
+        </div>
+
+        <div class="right-smallbox" id="rightToc">
+            <div class="toc-title">📜 目 录</div>
+            <ul class="toc-list" id="tocList"></ul>
+        </div>
+    </div>
+
+    <footer>
+        <span class="blink-pixel">◉</span> SRG 桃源服务器 · 新人生存指南 <span class="blink-pixel">◉</span><br>
+        桃源岛委员会 | SRG娘：“有点啰嗦...”
+    </footer>
+</div>
+
+<script>
+    const LANGUAGE_DATA = {
+        "zh": {
+            siteName: "游戏指南",
+            backBtn: "← 返回首页",
+            sections: [
+                { id: "welcome", title: "欢迎来到SRG桃源服务器" },
+                { id: "step1", title: "一、进服第一步：选择世界" },
+                { id: "daily", title: "二、每日签到与金币" },
+                { id: "resource", title: "三、采集资源（去哪挖矿）" },
+                { id: "claim", title: "四、建立自己的家（圈地）" },
+                { id: "shop", title: "五、箱子商店（买卖物品）" },
+                { id: "protection", title: "六、自我保护（遇到偷窃或破坏怎么办）" },
+                { id: "advance", title: "七、进阶：加入工会或注册公司" },
+                { id: "rules", title: "八、重要规则（请务必遵守）" },
+                { id: "commands", title: "九、常用指令速查" },
+                { id: "tips", title: "十、服务器tips" }
+            ],
+            content: {
+                welcome: "<p>欢迎来到SRG桃源服务器。本指南将帮助你快速起步。建议按顺序阅读，或使用右侧目录跳转。</p><div class='note'>💡 群文件查阅本服规则，来保护你的劳动成果。遇到不懂的，先问老玩家或看指南。</div>",
+                step1: "<p><strong>1. 进入服务器后，你会在一个登录大厅。</strong><br>- 点击面前的NPC，或输入 <code>/c</code> 打开世界选择菜单。</p><p><strong>2. 你会看到多个世界，初期只需要用两个：</strong><br>- <strong>生存世界</strong>：你未来的家，建筑、领地都在这里。<br>- <strong>资源世界</strong>：专门挖矿、砍树、收集材料的地方。<br>- 资源世界会定期重置地形，不要在那里盖房子或放贵重箱子。</p><p><strong>3. 两个世界的背包数据互通</strong>（资源世界挖的东西可以带回生存世界）。</p>",
+                daily: "<p>输入 <code>/c</code> 或点击NPC，找到签到按钮，每天可领取一定数量的 <strong>金币</strong>。<br>金币是服务器官方货币，用于交易、支付、赔偿等。</p>",
+                resource: "<p>推荐去<strong>资源世界</strong>：矿物密集，不影响他人。<br>生存世界也有资源，但主城周边资源稀少，且容易误挖别人的建筑（可能被告）。<br>⚠️ 温馨提示：未经许可，不要拿走别人的任何物品。服务器有完整法律，盗窃会被封禁。</p>",
+                claim: "<p><strong>1. 在生存世界找一片空旷、无主的地方。</strong></p><p><strong>2. 手持木锄头：</strong><br>- 左键点击一个最低角落的方块（选择第一个点）。<br>- 右键点击对角线最高角落的方块（选择第二个点）。<br>- 系统会框出一个长方体区域。</p><p><strong>3. 输入 <code>/res create 你的英文名</code></strong>（例如 <code>/res create myhome</code>）。<br>成功后，这片土地就是你的私人领地了。</p><p><strong>4. 常用领地指令：</strong><br>- <code>/res set</code> — 可视化设置权限<br>- <code>/res padd 玩家ID</code> — 允许朋友建造<br>- <code>/res remove</code> — 删除领地（需 <code>/res confirm</code>）<br>- <code>/res help</code> — 更多指令<br>⚠️ 禁止圈占公共道路、冰道、他人建筑、热门矿洞等，否则管理可强制拆除。</p>",
+                shop: "<p><strong>创建商店（出售物品）</strong><br>1. 放一个箱子。<br>2. 手持你要卖的物品，左键点击箱子。<br>3. 按 <code>T</code> 输入单价（如 <code>10</code> 表示每个10金币）。<br>4. 箱子上会自动生成木牌，商店即创建完成。</p><p><strong>修改商店：</strong>右键点击木牌，按T修改价格或数量。<br><strong>购买物品：</strong>右键点击木牌，按T输入数量，系统自动扣款。<br><strong>玩家间直接交易：</strong>使用 <code>/pay 玩家ID 金额</code> 转账。</p>",
+                protection: "<p><strong>1. 取证：</strong>输入 <code>/co i</code> 进入查询模式，点击被破坏方块，记录对方ID，再输入 <code>/co i</code> 退出。</p><p><strong>2. 尝试沟通：</strong>私聊对方要求归还/修复。</p><p><strong>3. 寻求管理帮助：</strong>带着证据找管理员，管理员会传唤嫌疑人，必要时强制赔偿。</p><p><strong>4. 误判封禁申诉：</strong>3日内向管理提交申诉，说明经过、指控罪名及你认为规则引用错误的条款。</p>",
+                advance: "<p><strong>工会：</strong>至少5名玩家可申请成立，用于团队协作、活动组织。<br><strong>公司：</strong>至少2名玩家可注册，拥有独立财产，可经营商店、承包工程等。<br>详细规则请阅读《玩家工会及公司制度》。</p>",
+                rules: "<p>以下行为会直接导致长期封禁甚至永久封禁：<br>• 使用透视、加速、自动点击等作弊工具。<br>• 盗窃或破坏他人财物（总价值≥500金币）。<br>• 恶意高频红石、循环刷物品导致卡顿。<br>• 辱骂管理员、藐视司法程序。<br>• 讨论政治敏感、色情、暴力等内容。</p><p>完整规则请查《SRG玩家行为守则》。</p>",
+                commands: `<table class="cmd-table">
+                            <thead><tr><th>功能</th><th>指令</th></tr></thead>
+                            <tbody>
+                                <tr><td>打开世界菜单</td><td>/c</td></tr>
+                                <tr><td>创建领地</td><td>/res create 英文名</td></tr>
+                                <tr><td>删除领地</td><td>/res remove</td></tr>
+                                <tr><td>设置领地（图像界面）</td><td>/res set</td></tr>
+                                <tr><td>给好友加入领地权限</td><td>/res padd 玩家ID</td></tr>
+                                <tr><td>查询破坏记录</td><td>/co i</td></tr>
+                                <tr><td>转账</td><td>/pay 玩家ID 金额</td></tr>
+                                <tr><td>传送（申请）</td><td>/tpa 玩家ID</td></tr>
+                                <tr><td>传送此地（申请）</td><td>/tpahere 玩家ID</td></tr>
+                                <tr><td>传送至资源/生存世界</td><td>/c 选择</td></tr>
+                            </tbody>
+                          </table><p>更多指令请游戏内探索~</p>`,
+                tips: "<p>• 群文件查阅本服规则，保护你的劳动成果。<br>• 遇到不懂的，可以先问老玩家或看指南♥。<br>• 真诚悔过 + 赔偿损失，小错误有机会通过写检讨赦免。<br>• 祝你在SRG桃源服务器玩得愉快！<br><em>本文档为官方新人指南，如有更新以最新公告为准。</em></p>"
+            }
+        },
+        "zh-TW": {
+            siteName: "遊戲指南",
+            backBtn: "← 返回首頁",
+            sections: [
+                { id: "welcome", title: "歡迎來到SRG桃源伺服器" },
+                { id: "step1", title: "一、進服第一步：選擇世界" },
+                { id: "daily", title: "二、每日簽到與金幣" },
+                { id: "resource", title: "三、採集資源（去哪挖礦）" },
+                { id: "claim", title: "四、建立自己的家（圈地）" },
+                { id: "shop", title: "五、箱子商店（買賣物品）" },
+                { id: "protection", title: "六、自我保護（遇到偷竊或破壞怎麼辦）" },
+                { id: "advance", title: "七、進階：加入工會或註冊公司" },
+                { id: "rules", title: "八、重要規則（請務必遵守）" },
+                { id: "commands", title: "九、常用指令速查" },
+                { id: "tips", title: "十、伺服器tips" }
+            ],
+            content: {
+                welcome: "<p>歡迎來到SRG桃源伺服器。本指南將幫助你快速起步。建議按順序閱讀，或使用右側目錄跳轉。</p><div class='note'>💡 群檔案查閱本服規則，保護你的勞動成果。遇到不懂的，先問老玩家或看指南。</div>",
+                step1: "<p><strong>1. 進入伺服器後，你會在一個登錄大廳。</strong><br>- 點擊面前的NPC，或輸入 <code>/c</code> 打開世界選擇菜單。</p><p><strong>2. 你會看到多個世界，初期只需要用兩個：</strong><br>- <strong>生存世界</strong>：你未來的家，建築、領地都在這裡。<br>- <strong>資源世界</strong>：專門挖礦、砍樹、收集材料的地方。<br>- 資源世界會定期重置地形，不要在那裡蓋房子或放貴重箱子。</p><p><strong>3. 兩個世界的背包數據互通</strong>（資源世界挖的東西可以帶回生存世界）。</p>",
+                daily: "<p>輸入 <code>/c</code> 或點擊NPC，找到簽到按鈕，每天可領取一定數量的 <strong>金幣</strong>。<br>金幣是伺服器官方貨幣，用於交易、支付、賠償等。</p>",
+                resource: "<p>推薦去<strong>資源世界</strong>：礦物密集，不影響他人。<br>生存世界也有資源，但主城周邊資源稀少，且容易誤挖別人的建築（可能被告）。<br>⚠️ 溫馨提示：未經許可，不要拿走別人的任何物品。伺服器有完整法律，盜竊會被封禁。</p>",
+                claim: "<p><strong>1. 在生存世界找一片空曠、無主的地方。</strong></p><p><strong>2. 手持木鋤頭：</strong><br>- 左鍵點擊一個最低角落的方塊（選擇第一個點）。<br>- 右鍵點擊對角線最高角落的方塊（選擇第二個點）。<br>- 系統會框出一個長方體區域。</p><p><strong>3. 輸入 <code>/res create 你的英文名</code></strong>（例如 <code>/res create myhome</code>）。<br>成功後，這片土地就是你的私人領地了。</p><p><strong>4. 常用領地指令：</strong><br>- <code>/res set</code> — 可視化設定權限<br>- <code>/res padd 玩家ID</code> — 允許朋友建造<br>- <code>/res remove</code> — 刪除領地（需 <code>/res confirm</code>）<br>- <code>/res help</code> — 更多指令<br>⚠️ 禁止圈佔公共道路、冰道、他人建築、熱門礦洞等，否則管理可強制拆除。</p>",
+                shop: "<p><strong>建立商店（出售物品）</strong><br>1. 放一個箱子。<br>2. 手持你要賣的物品，左鍵點擊箱子。<br>3. 按 <code>T</code> 輸入單價（如 <code>10</code> 表示每個10金幣）。<br>4. 箱子上會自動生成木牌，商店即建立完成。</p><p><strong>修改商店：</strong>右鍵點擊木牌，按T修改價格或數量。<br><strong>購買物品：</strong>右鍵點擊木牌，按T輸入數量，系統自動扣款。<br><strong>玩家間直接交易：</strong>使用 <code>/pay 玩家ID 金額</code> 轉帳。</p>",
+                protection: "<p><strong>1. 取證：</strong>輸入 <code>/co i</code> 進入查詢模式，點擊被破壞方塊，記錄對方ID，再輸入 <code>/co i</code> 退出。</p><p><strong>2. 嘗試溝通：</strong>私聊對方要求歸還/修復。</p><p><strong>3. 尋求管理幫助：</strong>帶著證據找管理員，管理員會傳喚嫌疑人，必要時強制賠償。</p><p><strong>4. 誤判封禁申訴：</strong>3日內向管理提交申訴，說明經過、指控罪名及你認為規則引用錯誤的條款。</p>",
+                advance: "<p><strong>工會：</strong>至少5名玩家可申請成立，用於團隊協作、活動組織。<br><strong>公司：</strong>至少2名玩家可註冊，擁有獨立財產，可經營商店、承包工程等。<br>詳細規則請閱讀《玩家工會及公司制度》。</p>",
+                rules: "<p>以下行為會直接導致長期封禁甚至永久封禁：<br>• 使用透視、加速、自動點擊等作弊工具。<br>• 盜竊或破壞他人財物（總價值≥500金幣）。<br>• 惡意高頻紅石、循環刷物品導致卡頓。<br>• 辱罵管理員、藐視司法程序。<br>• 討論政治敏感、色情、暴力等內容。</p><p>完整規則請查《SRG玩家行為守則》。</p>",
+                commands: `<table class="cmd-table">
+                            <thead><tr><th>功能</th><th>指令</th></tr></thead>
+                            <tbody>
+                                <tr><td>打開世界菜單</td><td>/c</td></tr>
+                                <tr><td>創建領地</td><td>/res create 英文名</td></tr>
+                                <tr><td>刪除領地</td><td>/res remove</td></tr>
+                                <tr><td>設定領地（圖像界面）</td><td>/res set</td></tr>
+                                <tr><td>給好友加入領地權限</td><td>/res padd 玩家ID</td></tr>
+                                <tr><td>查詢破壞記錄</td><td>/co i</td></tr>
+                                <tr><td>轉帳</td><td>/pay 玩家ID 金額</td></tr>
+                                <tr><td>傳送（申請）</td><td>/tpa 玩家ID</td></tr>
+                                <tr><td>傳送此地（申請）</td><td>/tpahere 玩家ID</td></tr>
+                                <tr><td>傳送至資源/生存世界</td><td>/c 選擇</td></tr>
+                            </tbody>
+                          </table><p>更多指令請遊戲內探索~</p>`,
+                tips: "<p>• 群檔案查閱本服規則，保護你的勞動成果。<br>• 遇到不懂的，可以先問老玩家或看指南♥。<br>• 真誠悔過 + 賠償損失，小錯誤有機會透過寫檢討赦免。<br>• 祝你在SRG桃源伺服器玩得愉快！<br><em>本文檔為官方新人指南，如有更新以最新公告為準。</em></p>"
+            }
+        },
+        "en": {
+            siteName: "GAME GUIDE",
+            backBtn: "← Home",
+            sections: [
+                { id: "welcome", title: "Welcome to SRG Taoyuan" },
+                { id: "step1", title: "I. First Step: Choose World" },
+                { id: "daily", title: "II. Daily Sign & Coins" },
+                { id: "resource", title: "III. Gathering Resources" },
+                { id: "claim", title: "IV. Claim Your Land" },
+                { id: "shop", title: "V. Chest Shop (Buy/Sell)" },
+                { id: "protection", title: "VI. Self Protection" },
+                { id: "advance", title: "VII. Guild & Corporation" },
+                { id: "rules", title: "VIII. Important Rules" },
+                { id: "commands", title: "IX. Command List" },
+                { id: "tips", title: "X. Server Tips" }
+            ],
+            content: {
+                welcome: "<p>Welcome to SRG Taoyuan server. This guide helps you start quickly and avoid pitfalls. Read in order or use TOC on the right.</p><div class='note'>💡 Check group files for server rules. Ask veteran players if unsure.</div>",
+                step1: "<p><strong>1. After joining, you will be in a lobby.</strong><br>- Click NPC or type <code>/c</code> to open world menu.</p><p><strong>2. Two main worlds for beginners:</strong><br>- <strong>Survival World</strong>: your future home, buildings, land claims.<br>- <strong>Resource World</strong>: mining, woodcutting, gathering.<br>- Resource world resets periodically — do not build or store valuables there.</p><p><strong>3. Inventory is shared</strong> between worlds (items from resource world can be taken to survival).</p>",
+                daily: "<p>Type <code>/c</code> or click NPC, find the daily sign button to claim <strong>coins</strong> every day.<br>Coins are official currency for trading, payments, compensation.</p>",
+                resource: "<p>Recommended: <strong>Resource World</strong> — dense ores, no disturbance.<br>Survival world has resources too, but scarce near spawn; accidental griefing may cause trouble.<br>⚠️ Never take others' items without permission. Theft leads to ban.</p>",
+                claim: "<p><strong>1. Find an empty area in Survival World.</strong></p><p><strong>2. Hold a wooden axe:</strong><br>- Left-click lowest corner (first point).<br>- Right-click opposite highest corner (second point).<br>- A cuboid region will be outlined.</p><p><strong>3. Type <code>/res create yourName</code></strong> (e.g. <code>/res create myhome</code>).<br>Success! That land is your private region.</p><p><strong>4. Useful land commands:</strong><br>- <code>/res set</code> — visual permissions<br>- <code>/res padd playerID</code> — allow friend to build<br>- <code>/res remove</code> — delete land (confirm with <code>/res confirm</code>)<br>- <code>/res help</code> — more commands<br>⚠️ Do not claim public roads, ice paths, others' builds, popular caves — admin may remove.</p>",
+                shop: "<p><strong>Create shop (selling)</strong><br>1. Place a chest.<br>2. Hold item you want to sell, left-click chest.<br>3. Press <code>T</code> and type unit price (e.g. <code>10</code> = 10 coins each).<br>4. A sign appears, shop created.</p><p><strong>Edit shop:</strong> right-click sign, press T to modify price/amount.<br><strong>Buy:</strong> right-click sign, press T and enter amount, payment deducted automatically.<br><strong>Direct trade:</strong> use <code>/pay playerID amount</code>.</p>",
+                protection: "<p><strong>1. Evidence:</strong> type <code>/co i</code> to enter inspect mode, click broken block, note the player's ID, then type <code>/co i</code> again to exit.</p><p><strong>2. Communicate:</strong> ask player to return/fix.</p><p><strong>3. Seek admin help:</strong> provide evidence, admin will summon suspect and force compensation if needed.</p><p><strong>4. Appeal false ban:</strong> submit appeal within 3 days, describe details and which rule you think was misapplied.</p>",
+                advance: "<p><strong>Guild:</strong> at least 5 players can apply, for team collaboration and events.<br><strong>Corporation:</strong> at least 2 players can register, with independent assets, can run shops, contracts etc.<br>See official 'Guild & Corporation System' for details.</p>",
+                rules: "<p>Actions leading to long-term or permanent ban:<br>• Cheats: x-ray, speed, autoclick.<br>• Theft or griefing (value ≥500 coins).<br>• Malicious high-frequency redstone, item duping causing lag.<br>• Insulting admin, contempt of judicial process.<br>• Discussing sensitive politics, porn, violence.</p><p>Full rules in 'SRG Player Code of Conduct'.</p>",
+                commands: `<table class="cmd-table">
+                            <thead><tr><th>Function</th><th>Command</th></tr></thead>
+                            <tbody>
+                                <tr><td>Open world menu</td><td>/c</td></tr>
+                                <tr><td>Create land claim</td><td>/res create name</td></tr>
+                                <tr><td>Delete land</td><td>/res remove</td></tr>
+                                <tr><td>Set permissions (GUI)</td><td>/res set</td></tr>
+                                <tr><td>Add friend to land</td><td>/res padd playerID</td></tr>
+                                <tr><td>Inspect griefing</td><td>/co i</td></tr>
+                                <tr><td>Pay coins</td><td>/pay playerID amount</td></tr>
+                                <tr><td>Teleport request</td><td>/tpa playerID</td></tr>
+                                <tr><td>Request teleport here</td><td>/tpahere playerID</td></tr>
+                                <tr><td>Go to resource/survival</td><td>/c then select</td></tr>
+                            </tbody>
+                          </table><p>More commands in-game~</p>`,
+                tips: "<p>• Check group files for rules to protect your work.<br>• Ask old players if confused.<br>• Sincere apology + compensation may grant pardon for minor offenses.<br>• Have fun on SRG Taoyuan!<br><em>Official newbie guide, subject to latest announcements.</em></p>"
+            }
+        }
+    };
+
+    const siteNameElem = document.getElementById('siteNameOverlay');
+    const leftContainer = document.getElementById('leftGuideContent');
+    const tocContainer = document.getElementById('tocList');
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    function renderGuide(langCode) {
+        const data = LANGUAGE_DATA[langCode];
+        if (!data) return;
+        siteNameElem.innerText = data.siteName;
+
+        let leftHtml = `<a href="index.html" class="back-home-btn">${data.backBtn}</a>`;
+        for (let sec of data.sections) {
+            leftHtml += `<h2 id="${sec.id}">${sec.title}</h2>`;
+            leftHtml += `<div class="section-content">${data.content[sec.id]}</div>`;
+        }
+        leftContainer.innerHTML = leftHtml;
+
+        let tocHtml = '';
+        for (let sec of data.sections) {
+            tocHtml += `<li><a href="#${sec.id}" class="toc-link" data-target="${sec.id}">${sec.title}</a></li>`;
+        }
+        tocContainer.innerHTML = tocHtml;
+
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    }
+
+    function detectLanguageFromPrevious() {
+        let savedLang = localStorage.getItem('y2k_universe_lang');
+        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
+            return savedLang;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
+            localStorage.setItem('y2k_universe_lang', urlLang);
+            return urlLang;
+        }
+        return 'zh';
+    }
+
+    let currentLang = 'zh';
+
+    function setLanguage(langCode, updateStorage = true) {
+        if (!LANGUAGE_DATA[langCode]) return;
+        currentLang = langCode;
+        renderGuide(currentLang);
+        if (updateStorage) {
+            localStorage.setItem('y2k_universe_lang', currentLang);
+        }
+        langBtns.forEach(btn => {
+            const btnLang = btn.getAttribute('data-lang');
+            if (btnLang === langCode) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        if (langCode === 'zh') document.documentElement.lang = 'zh-CN';
+        else if (langCode === 'zh-TW') document.documentElement.lang = 'zh-TW';
+        else if (langCode === 'en') document.documentElement.lang = 'en';
+    }
+
+    function initLanguage() {
+        let initialLang = detectLanguageFromPrevious();
+        if (!LANGUAGE_DATA[initialLang]) initialLang = 'zh';
+        setLanguage(initialLang, true);
+    }
+
+    function bindEvents() {
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newLang = btn.getAttribute('data-lang');
+                if (newLang && LANGUAGE_DATA[newLang]) {
+                    setLanguage(newLang, true);
+                }
+            });
+        });
+    }
+
+    function handleBannerImage() {
+        const bannerImg = document.querySelector('.hero-banner img');
+        if (bannerImg) {
+            bannerImg.onerror = function() {
+                if (!this.dataset.fallbackSet) {
+                    this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200'%3E%3Crect width='1200' height='200' fill='%236aa9d9'/%3E%3Ctext x='50%25' y='50%25' font-size='20' font-family='monospace' fill='%23ffffff' text-anchor='middle' dy='.3em'%3E📸 替换图片: placeholder-banner.jpg%3C/text%3E%3C/svg%3E";
+                    this.dataset.fallbackSet = "true";
+                }
+            };
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initLanguage();
+        bindEvents();
+        handleBannerImage();
+        console.log("%c SRG 新人生存指南 \n右侧目录可点击跳转，语言偏好自动继承", "color: #2a6d8f; font-size: 14px;");
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>| 施工中 |</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        @font-face {
+            font-family: 'UnifontPixel';
+            src: url('font/Unifont13.0.01.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'UnifontPixel', 'Courier New', 'VT323', monospace;
+            background-color: #b8dcff;
+            min-height: 100vh;
+            padding: 24px 32px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle at 20px 20px, #a0c8f0 12px, transparent 12px);
+            background-size: 80px 80px;
+            background-color: #cfe6ff;
+            background-repeat: repeat;
+            animation: diagonalMoveLeftUp 22s linear infinite;
+            opacity: 0.65;
+        }
+
+        @keyframes diagonalMoveLeftUp {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -200px -200px;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(248, 250, 255, 0.92);
+            backdrop-filter: blur(3px);
+            border: 4px solid #5d9ac9;
+            box-shadow: 12px 12px 0px 0px rgba(47, 79, 109, 0.3);
+            padding: 40px 30px 60px 30px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .bow-gif {
+            margin: 20px auto 20px;
+            text-align: center;
+        }
+        .bow-gif img {
+            max-width: 180px;
+            width: 100%;
+            height: auto;
+            image-rendering: crisp-edges;
+            display: inline-block;
+        }
+
+        .message {
+            margin: 20px 0 15px;
+        }
+        .message p {
+            font-size: 1.4rem;
+            color: #1e4a6e;
+            line-height: 1.6;
+            text-shadow: 2px 2px 0 #eef4ff;
+            letter-spacing: 1px;
+        }
+        .message .sorry {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .message .expect {
+            font-size: 1.5rem;
+            color: #cc7b2c;
+            margin-top: 20px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            background: #e6f0ff;
+            border: 2px solid #4982b0;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 10px 28px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1f5a7e;
+            box-shadow: 2px 2px 0px #93bbdd;
+            text-decoration: none;
+            margin-top: 35px;
+        }
+        .home-btn:hover {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #7ba2c4;
+        }
+
+        .corner-gif {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .corner-gif img {
+            width: 80px;
+            height: auto;
+            image-rendering: crisp-edges;
+            opacity: 0.9;
+            transition: transform 0.2s;
+        }
+        .corner-gif img:hover {
+            transform: scale(1.05);
+            pointer-events: auto;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 16px;
+            }
+            .container {
+                padding: 30px 20px 50px 20px;
+            }
+            .message p {
+                font-size: 1.2rem;
+            }
+            .message .sorry {
+                font-size: 1.4rem;
+            }
+            .message .expect {
+                font-size: 1.3rem;
+            }
+            .home-btn {
+                font-size: 1rem;
+                padding: 8px 20px;
+            }
+            .corner-gif {
+                bottom: 12px;
+                left: 12px;
+            }
+            .corner-gif img {
+                width: 60px;
+            }
+            .bow-gif img {
+                max-width: 140px;
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5f7f9a;
+            border-top: 1px dotted #9cbedc;
+            padding-top: 20px;
+        }
+        .blink-pixel {
+            animation: blink 1.2s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: #caddf0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5f93bb;
+            border-radius: 0px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="bow-gif">
+        <img src="image/loadingorfixing/dejiko.gif" alt="鞠躬小人" onerror="this.src='https://placehold.co/180x180/ffdd99/black?text=dejiko.gif'">
+    </div>
+
+    <div class="message">
+        <p class="sorry">本页还在施工！非常抱歉！</p>
+        <p class="expect">敬请期待！</p>
+    </div>
+
+    <a href="index.html" class="home-btn">返回主页</a>
+
+    <div class="corner-gif">
+        <img src="image/loadingorfixing/chi.gif" alt="左下角小人" onerror="this.src='https://placehold.co/80x80/ffdd99/black?text=chi.gif'">
+    </div>
+
+    <footer>
+        <span class="blink-pixel">◉</span> SRG 桃源服务器 | 网页施工队 <span class="blink-pixel">◉</span>
+    </footer>
+</div>
+
+<script>
+    console.log("%c 施工中页面已上线 · 页面正在建设中，稍后回来 ", "color: #cc7b2c; font-size: 14px; font-family: monospace;");
+</script>
+</body>
+</html>

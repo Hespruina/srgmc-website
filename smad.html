@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SRG桃源服务器 | 组织架构</title>
+    <style>
+        /* ========== 自定义本地像素字体 ========== */
+        @font-face {
+            font-family: 'UnifontLocal';
+            src: url('font/Unifont13.0.01.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ========== RESET & 全局像素风格 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        body {
+            font-family: 'UnifontLocal', 'Courier New', 'VT323', 'Press Start 2P', monospace;
+            background-color: #b0e0ff;
+            min-height: 100vh;
+            padding: 24px 20px;
+            position: relative;
+            background-image: radial-gradient(circle at 20px 20px, #3c8fbc 3px, transparent 3px);
+            background-size: 50px 50px;
+            background-color: #b9dcff;
+            animation: bgShift 12s linear infinite;
+            color: #1e2a3a;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0 0; }
+            100% { background-position: -50px -50px; }
+        }
+
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: rgba(225, 245, 255, 0.88);
+            backdrop-filter: blur(2px);
+            border: 4px solid #0f4c5c;
+            box-shadow: 12px 12px 0 rgba(0, 20, 30, 0.2);
+            padding: 20px 24px 32px;
+        }
+
+        .logo-bar {
+            width: 100%;
+            background: #d8f0ff;
+            border: 3px solid #0f3b4a;
+            margin-bottom: 28px;
+            padding: 12px 20px;
+            text-align: center;
+            box-shadow: inset 0 0 0 2px #f4fcff, 5px 5px 0 #2c5a6e;
+        }
+
+        /* 容器：相对定位，用于文字叠加在图片上 */
+        .dynamic-logo {
+            position: relative;
+            background: repeating-linear-gradient(45deg, #fff0b5, #fff0b5 15px, #ffd966 15px, #ffd966 30px);
+            padding: 20px 12px;
+            border: 2px dotted #206b7e;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dynamic-logo img {
+            max-width: 100%;
+            max-height: 160px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            image-rendering: crisp-edges;
+            border: 2px solid #0f3b4a;
+            box-shadow: 3px 3px 0 #2c5a6e;
+            background-color: #fff2cf;
+        }
+
+        /* 叠加标题文字：绝对定位，居中显示，带阴影效果，不挤占图片空间 */
+        .logo-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.4rem;
+            font-weight: bold;
+            font-family: 'UnifontLocal', monospace;
+            color: #fcf3cf;
+            background-color: rgba(31, 62, 72, 0.85);
+            padding: 8px 24px;
+            white-space: nowrap;
+            letter-spacing: 4px;
+            text-shadow: 4px 4px 0 #0f3b4a;
+            border: 2px solid #ffd966;
+            box-shadow: 3px 3px 0 #2c5a6e;
+            backdrop-filter: blur(2px);
+            pointer-events: none;  /* 让文字不干扰点击图片放大 */
+            z-index: 2;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .lang-btn {
+            background: #11212e;
+            border: 2px solid #6cc3df;
+            color: #c0eaff;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 14px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #3b879e;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+        }
+
+        .lang-btn.active {
+            background: #f9b81b;
+            color: #1e2f3a;
+            border-color: #ffffff;
+            box-shadow: 0px 0px 0 #3b879e;
+            transform: translate(2px, 2px);
+        }
+
+        .lang-btn:hover {
+            background: #3090b0;
+            color: #ffffc2;
+        }
+
+        .content-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .accordion-area {
+            flex: 2;
+            min-width: 260px;
+            background: rgba(235, 248, 255, 0.7);
+            padding: 12px 10px 10px 10px;
+            border: 3px solid #196b7c;
+            box-shadow: inset 0 0 0 2px #e3f6ff, 4px 4px 0 #175e6e;
+        }
+
+        .home-btn-block {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .home-btn {
+            background: #02262e;
+            border: 2px solid #7ed6df;
+            color: #ffecb3;
+            font-family: 'UnifontLocal', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 3px 3px 0 #144f5c;
+            transition: 0.1s;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background: #2f7b8c;
+            color: #fff4cf;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0 #0c3b45;
+        }
+
+        .image-gallery {
+            flex: 1.2;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .accordion-item {
+            background: #f5feff;
+            border: 2px solid #2a7f8c;
+            margin-bottom: 16px;
+            box-shadow: 3px 3px 0 #155f6b;
+        }
+
+        .accordion-header {
+            background: #bfe2f0;
+            padding: 12px 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.15rem;
+            font-family: 'UnifontLocal', 'Courier New', monospace;
+            border-bottom: 2px dotted #1a6f80;
+            color: #00222c;
+            text-shadow: 1px 1px 0 #9ed4e6;
+        }
+
+        .accordion-header:hover {
+            background: #abe0f2;
+        }
+
+        .toggle-icon {
+            font-size: 1.4rem;
+            background: #071e26;
+            color: #c1efff;
+            width: 26px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .accordion-content {
+            padding: 14px 18px;
+            background: #ecf9ff;
+            border-top: 1px solid #6bb5c7;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: #003340;
+            display: none;
+        }
+
+        .accordion-item.open .accordion-content {
+            display: block;
+        }
+
+        .pic-card {
+            background: #e2f2fa;
+            border: 4px solid #156675;
+            padding: 12px 12px 16px;
+            text-align: center;
+            box-shadow: 6px 6px 0 #0e4757;
+            position: relative;
+            overflow: visible;
+            transition: all 0.1s;
+        }
+
+        .pic-card img {
+            max-width: 100%;
+            height: auto;
+            background: #cbdbe2;
+            border: 3px solid #0b525f;
+            box-shadow: 2px 2px 0 #2b7d8f;
+            min-height: 120px;
+            object-fit: cover;
+            transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.2s;
+            cursor: zoom-in;
+        }
+
+        .pic-card:hover img {
+            transform: scale(1.07);
+            box-shadow: 4px 6px 12px rgba(0,0,0,0.3);
+            z-index: 20;
+            position: relative;
+        }
+
+        .pic-card {
+            overflow: visible;
+        }
+
+        .pic-card:hover {
+            z-index: 15;
+        }
+
+        .pic-caption {
+            margin-top: 12px;
+            font-weight: bold;
+            background: #02242e;
+            display: inline-block;
+            padding: 4px 12px;
+            color: #fae672;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border: 1px solid #72d4ee;
+        }
+
+        .pic-desc {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #013e44;
+            background: #ffffcf70;
+            padding: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            max-width: 85vw;
+            max-height: 85vh;
+            border: 6px solid #f5bc70;
+            box-shadow: 0 0 0 4px #0f4c5c, 20px 20px 0 rgba(0,0,0,0.3);
+            background: #fff0d0;
+            padding: 6px;
+        }
+
+        .modal-content img {
+            width: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            margin: 0 auto;
+            image-rendering: crisp-edges;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #ffdd99;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #000000aa;
+            padding: 4px 16px;
+            border-radius: 0px;
+            font-family: monospace;
+            border: 2px solid #ffcd94;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+            background: #b45309;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 0.7rem;
+            color: #024e5c;
+            border-top: 2px dotted #196e80;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 800px) {
+            body { padding: 12px; }
+            .main-wrapper { padding: 16px; }
+            .content-grid { flex-direction: column; }
+            .modal-content { max-width: 95vw; }
+            .logo-title { font-size: 1.4rem; padding: 4px 12px; white-space: nowrap; }
+            .dynamic-logo img { max-height: 120px; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #add8e6;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2c6b7c;
+            border: 2px solid #c2ecff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- 最上横框：动态图片 logo + 叠加标题 -->
+    <div class="logo-bar">
+        <div class="dynamic-logo">
+            <!-- 标题文字叠加在图片上方 -->
+            <div class="logo-title">组织架构</div>
+            <!-- Logo图片，路径保持不变 -->
+            <img src="image/CH1.jpg" alt="市政厅">
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="sc">简中</button>
+            <button class="lang-btn" data-lang="tc">繁中</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <!-- 左侧折叠栏 -->
+        <div class="accordion-area">
+            <div class="home-btn-block">
+                <a href="index.html" class="home-btn" id="backHomeBtn">🏠 返回首页 / BACK</a>
+            </div>
+            <div id="accordionContainer"></div>
+        </div>
+
+        <!-- 右侧三张图片卡片 -->
+        <div class="image-gallery" id="imageGallery">
+            <div class="pic-card" id="card1">
+                <img id="img1" alt="组织架构图1" src="" style="width:100%;">
+                <div class="pic-caption" id="cap1">现组织成员</div>
+                <div class="pic-desc" id="desc1">加载中...</div>
+            </div>
+            <div class="pic-card" id="card2">
+                <img id="img2" alt="位阶架构图" src="" style="width:100%;">
+                <div class="pic-caption" id="cap2">位阶架构</div>
+                <div class="pic-desc" id="desc2">加载中...</div>
+            </div>
+            <div class="pic-card" id="card3">
+                <img id="img3" alt="城市机关图" src="" style="width:100%;">
+                <div class="pic-caption" id="cap3">城市机关组织</div>
+                <div class="pic-desc" id="desc3">加载中...</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+         桃源岛委员会 | 组织架构
+    </footer>
+</div>
+
+<!-- 模态框 用于点击放大图片 -->
+<div id="imageModal" class="modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content">
+        <img id="modalImage" src="" alt="放大视图">
+    </div>
+</div>
+
+<script>
+    // ----------------------------- 多语言数据模型 (无任何Emoji，纯文字) ---------------------------------
+    const accordionData = {
+        sc: [   
+            { title: "桃源岛委员会", content: "桃源岛委员会是由服主、管理及玩家组成的委员会组织，由服主负责组织和领导；其组织可以对服务器规定进行修改、废除及释法功能。" },
+            { title: "服主", content: "服务器主人，可管辖服务器一切事务，负责桃源岛委员会人事变更，撤销委员会委员不当决定，委任管理、市长及委派居民；有权处分违规人员。\n现任服主为：桑叶（DeityMan_）" },
+            { title: "管理", content: "管理由服主委任，拥有在服务器的治理权，负责日常维护、规则执行及紧急处理，许可权的授予取决于服主。" },
+            { title: "市长", content: "市长由服主委任，与管理职权相同，负责城市事务，但有服主授权代理性质，工作向服主负责。\n现任市长为：禄门凯文（LVMEN__KWAN）" },
+            { title: "居民", content: "即是玩家。玩家拥有探索、建造與交易的自由，物品及居所受到保护不受侵害，有因处分提出申诉的权力。" },
+            { title: "玩家公会", content: "多名玩家构成的组织，合作生存、友好社交，互相协助来共同冒险。" },
+            { title: "委派居民", content: "由服主、管理委任的辅助管理治理服务器的玩家，解决日常纠纷和向服主、管理报告情况。" }
+        ],
+        tc: [   
+            { title: "桃源島委員會", content: "桃源島委員會是由服主、管理及玩家組成的委員會組織，由服主負責組織和領導；其組織可以對伺服器規定進行修改、廢除及釋法功能。" },
+            { title: "服主", content: "伺服器主人，可管轄伺服器一切事務，負責桃源島委員會人事變更，撤銷委員會委員不當決定，委任管理、市長及委派居民；有權處分違規人員。\n現任服主為：桑葉（DeityMan_）" },
+            { title: "管理", content: "管理由服主委任，擁有在伺服器的治理權，負責日常維護、規則執行及緊急處理，許可權的授予取決於服主。" },
+            { title: "市長", content: "市長由服主委任，與管理職權相同，負責城市事務，但有服主授權代理性質，工作向服主負責。\n現任市長為：祿門凱文（LVMEN__KWAN）" },
+            { title: "居民", content: "即是玩家。玩家擁有探索、建造與交易的自由，物品及居所受到保護不受侵害，有因處分提出申訴的權力。" },
+            { title: "玩家公會", content: "多名玩家構成的組織，合作生存、友好社交，互相協助來共同冒險。" },
+            { title: "委派居民", content: "由服主、管理委任的輔助管理治理伺服器的玩家，解決日常糾紛並向服主、管理報告情況。" }
+        ],
+        en: [   
+            { title: "Taoyuan Island Committee", content: "The Committee consists of the Server Owner, Admins, and players. Organized and led by the Server Owner, the Committee has the authority to amend, repeal, and interpret server regulations." },
+            { title: "Server Owner", content: "Sovereign of the server, oversees all affairs, manages personnel changes within the Committee, overturns improper decisions, appoints Admins, Mayors, and Delegated Residents, and has the power to penalize violators.\nCurrent Server Owner: SangYe (DeityMan_)" },
+            { title: "Admin", content: "Appointed by the Server Owner, holds governance authority, responsible for daily maintenance, rule enforcement, and emergency handling. Permission scope is determined by the Server Owner." },
+            { title: "Mayor", content: "Appointed by the Server Owner, shares the same authority as Admins, oversees city affairs but acts as an agent of the Server Owner, reporting directly to them.\nCurrent Mayor: Lumen Kwan (LVMEN__KWAN)" },
+            { title: "Resident", content: "Players. Residents have the freedom to explore, build, and trade. Their belongings and homes are protected from infringement, and they have the right to appeal any penalty." },
+            { title: "Player Guild", content: "An organization formed by multiple players to collaborate, socialize, assist each other, and embark on adventures together." },
+            { title: "Delegated Resident", content: "Players appointed by the Server Owner or Admins to assist in governance, resolve daily disputes, and report situations to the Server Owner or Admins." }
+        ]
+    };
+
+    // 右侧图片说明 (无Emoji)
+    const galleryCaptions = {
+        sc: {
+            card1: { cap: "现组织成员", desc: "于2025-2026年SRG桃源服务器管理架构图" },
+            card2: { cap: "位阶架构", desc: "基于《SRG规定总则》形成位阶架构图" },
+            card3: { cap: "城市机关组织", desc: "桃源档城市机关架构图" }
+        },
+        tc: {
+            card1: { cap: "現組織成員", desc: "於2025-2026年SRG桃源伺服器管理架構圖" },
+            card2: { cap: "位階架構", desc: "基於《SRG規定總則》形成位階架構圖" },
+            card3: { cap: "城市機關組織", desc: "桃源檔城市機關架構圖" }
+        },
+        en: {
+            card1: { cap: "Current Organization Members", desc: "2025-2026 SRG Taoyuan Server Management Structure" },
+            card2: { cap: "Hierarchy Structure", desc: "Structure based on 'SRG General Regulations'" },
+            card3: { cap: "City Agency Organization", desc: "Taoyuan City Agencies Architecture Diagram" }
+        }
+    };
+
+    // 图片路径规则 (完全保持原样)
+    const getImagePath = (imgIndex, lang) => {
+        const basePath = "image/SMAD/";
+        if (imgIndex === 1) {
+            if (lang === 'sc') return basePath + "2025-2026op_sc.jpg";
+            if (lang === 'tc') return basePath + "2025-2026op_tc.jpg";
+            return basePath + "2025-2026op_eng.jpg";
+        } else if (imgIndex === 2) {
+            if (lang === 'sc') return basePath + "sap_sc.jpg";
+            if (lang === 'tc') return basePath + "sap_tc.jpg";
+            return basePath + "sap_eng.jpg";
+        } else {
+            if (lang === 'sc') return basePath + "SRG_city_sc.jpg";
+            if (lang === 'tc') return basePath + "SRG_city_tc.jpg";
+            return basePath + "SRG_city_eng.jpg";
+        }
+    };
+
+    let currentLang = 'sc';
+    let accordionItems = [];
+
+    function buildAccordion() {
+        const container = document.getElementById('accordionContainer');
+        container.innerHTML = '';
+        const itemsCount = 7;
+        for (let i = 0; i < itemsCount; i++) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'accordion-item';
+            const header = document.createElement('div');
+            header.className = 'accordion-header';
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'accordion-title';
+            titleSpan.textContent = '加载中...';
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'toggle-icon';
+            iconSpan.textContent = '+';
+            header.appendChild(titleSpan);
+            header.appendChild(iconSpan);
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'accordion-content';
+            itemDiv.appendChild(header);
+            itemDiv.appendChild(contentDiv);
+            container.appendChild(itemDiv);
+            accordionItems.push({
+                wrapper: itemDiv,
+                header: header,
+                titleSpan: titleSpan,
+                contentDiv: contentDiv,
+                iconSpan: iconSpan,
+                isOpen: false
+            });
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isCurrOpen = itemDiv.classList.contains('open');
+                if (isCurrOpen) {
+                    itemDiv.classList.remove('open');
+                    iconSpan.textContent = '+';
+                    accordionItems[i].isOpen = false;
+                } else {
+                    itemDiv.classList.add('open');
+                    iconSpan.textContent = '−';
+                    accordionItems[i].isOpen = true;
+                }
+            });
+        }
+        updateAccordionTexts(currentLang);
+    }
+
+    function updateAccordionTexts(lang) {
+        const dataSet = accordionData[lang];
+        if (!dataSet) return;
+        for (let i = 0; i < accordionItems.length && i < dataSet.length; i++) {
+            accordionItems[i].titleSpan.textContent = dataSet[i].title;
+            accordionItems[i].contentDiv.innerHTML = dataSet[i].content.replace(/\n/g, '<br>');
+        }
+    }
+
+    function updateGallery(lang) {
+        const img1 = document.getElementById('img1');
+        const img2 = document.getElementById('img2');
+        const img3 = document.getElementById('img3');
+        if (img1) img1.src = getImagePath(1, lang);
+        if (img2) img2.src = getImagePath(2, lang);
+        if (img3) img3.src = getImagePath(3, lang);
+        
+        const cleanErrors = () => {
+            document.querySelectorAll('.error-placeholder').forEach(el => el.remove());
+        };
+        cleanErrors();
+        
+        const handleError = (imgElement, defaultMsg) => {
+            if (!imgElement) return;
+            imgElement.onerror = () => {
+                imgElement.alt = defaultMsg;
+                imgElement.style.backgroundColor = '#436e7c';
+                if (!imgElement.parentNode.querySelector('.error-placeholder')) {
+                    const errSpan = document.createElement('div');
+                    errSpan.className = 'error-placeholder';
+                    errSpan.style.fontSize = '0.7rem';
+                    errSpan.style.background = '#1c2f38';
+                    errSpan.style.color = '#ffcb77';
+                    errSpan.style.padding = '4px';
+                    errSpan.style.marginTop = '6px';
+                    errSpan.innerText = `⚠️ 缺失: ${defaultMsg}`;
+                    imgElement.parentNode.insertBefore(errSpan, imgElement.nextSibling);
+                }
+            };
+        };
+        handleError(img1, `2025-2026op_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'ts' : 'eng')}.jpg`);
+        handleError(img2, `sap_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'tc' : 'eng')}.jpg`);
+        handleError(img3, `SRG_city_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'tc' : 'eng')}.jpg`);
+        
+        const captions = galleryCaptions[lang];
+        if (captions) {
+            document.getElementById('cap1').innerText = captions.card1.cap;
+            document.getElementById('desc1').innerText = captions.card1.desc;
+            document.getElementById('cap2').innerText = captions.card2.cap;
+            document.getElementById('desc2').innerText = captions.card2.desc;
+            document.getElementById('cap3').innerText = captions.card3.cap;
+            document.getElementById('desc3').innerText = captions.card3.desc;
+        }
+    }
+
+    function switchLanguage(lang) {
+        currentLang = lang;
+        updateAccordionTexts(lang);
+        updateGallery(lang);
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function bindImageClickModal() {
+        const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeSpan = document.querySelector('.close-modal');
+        imgs.forEach(img => {
+            if (!img) return;
+            img.removeEventListener('click', img._modalHandler);
+            const handler = () => {
+                if (img.src && img.src !== "") {
+                    modalImg.src = img.src;
+                    modal.style.display = 'flex';
+                } else {
+                    modalImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23333'/%3E%3Ctext x='10' y='55' fill='white'%3E无图片%3C/text%3E%3C/svg%3E";
+                    modal.style.display = 'flex';
+                }
+            };
+            img.addEventListener('click', handler);
+            img._modalHandler = handler;
+        });
+        if (closeSpan && modal) {
+            const closeModal = () => { modal.style.display = 'none'; };
+            closeSpan.onclick = closeModal;
+            modal.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
+        }
+    }
+    
+    function enhancedSwitch(lang) {
+        document.querySelectorAll('.error-placeholder').forEach(el => el.remove());
+        switchLanguage(lang);
+        const img1 = document.getElementById('img1');
+        const img2 = document.getElementById('img2');
+        const img3 = document.getElementById('img3');
+        const resetErr = (img, msg) => {
+            if(!img) return;
+            img.onerror = null;
+            img.onerror = () => {
+                img.alt = msg;
+                if (!img.parentNode.querySelector('.error-placeholder')) {
+                    const errDiv = document.createElement('div');
+                    errDiv.className = 'error-placeholder';
+                    errDiv.innerText = `🖼️ [${msg}] 未找到`;
+                    errDiv.style.background = '#0a2f3b';
+                    errDiv.style.color = '#ffbf69';
+                    errDiv.style.fontSize = '0.7rem';
+                    errDiv.style.padding = '4px';
+                    errDiv.style.marginTop = '8px';
+                    img.parentNode.insertBefore(errDiv, img.nextSibling);
+                }
+            };
+        };
+        resetErr(img1, `2025-2026op_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'ts' : 'eng')}.jpg`);
+        resetErr(img2, `sap_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'tc' : 'eng')}.jpg`);
+        resetErr(img3, `SRG_city_${lang === 'sc' ? 'sc' : (lang === 'tc' ? 'tc' : 'eng')}.jpg`);
+        if (img1) img1.src = getImagePath(1, lang);
+        if (img2) img2.src = getImagePath(2, lang);
+        if (img3) img3.src = getImagePath(3, lang);
+        bindImageClickModal();
+    }
+
+    function bindLangEvents() {
+        const btns = document.querySelectorAll('.lang-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = btn.getAttribute('data-lang');
+                if (lang === currentLang) return;
+                enhancedSwitch(lang);
+            });
+        });
+    }
+
+    function init() {
+        buildAccordion();
+        bindLangEvents();
+        enhancedSwitch('sc');
+        bindImageClickModal();
+    }
+    init();
+</script>
+</body>
+</html>
