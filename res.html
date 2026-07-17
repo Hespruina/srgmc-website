@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SRG桃源服务器 | 资源下载</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        /* ---- 字體 ---- */
+        @font-face {
+            font-family: 'UnifontPixel';
+            src: url('font/Unifont13.0.01.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ---- 背景 ---- */
+        body {
+            font-family: 'UnifontPixel', 'Courier New', 'VT323', monospace;
+            background-color: #9abed5;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 24px 32px;
+            position: relative;
+            background-image:
+                linear-gradient(to right, #d0e8ff 1px, transparent 1px),
+                linear-gradient(to bottom, #d0e8ff 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0;
+            animation: moveGrid 40s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 80px 80px;
+            }
+        }
+
+        /* ---- 主容器 ---- */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(248, 250, 255, 0.92);
+            backdrop-filter: blur(3px);
+            border: 4px solid #5d9ac9;
+            box-shadow: 12px 12px 0px 0px rgba(47, 79, 109, 0.3);
+            padding: 20px 24px 30px 24px;
+            transition: all 0.2s;
+        }
+
+        /* ---- 橫幅圖片(我設計的那個圖片res.png) ---- */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 170px;
+            overflow: hidden;
+            border: 3px solid #3f7eb6;
+            margin-bottom: 28px;
+            background: #85b9e0;
+            box-shadow: 6px 6px 0px #2f5a7a;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;          /* 爲了圖片部分不被吞掉而加入 */
+            object-position: center;
+            display: block;
+            image-rendering: auto;
+            background-color: #85b9e0;    /* 藍色~ */
+        }
+
+        /* ---- 內容網格（左大右小）一般就這樣做固定模板就行了 ---- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            gap: 28px;
+            margin: 20px 0 25px;
+        }
+
+        /* ---- 左側大框 ---- */
+        .left-bigbox {
+            background: rgba(252, 253, 255, 0.94);
+            border: 3px solid #5d9ac9;
+            padding: 22px 24px;
+            box-shadow: 5px 5px 0px #b8d2ed;
+        }
+
+        /* ---- 返回按鈕 ---- */
+        .back-home-btn {
+            display: inline-block;
+            background: #e6f0ff;
+            border: 2px solid #4982b0;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1f5a7e;
+            box-shadow: 2px 2px 0px #93bbdd;
+            text-decoration: none;
+            margin-bottom: 25px;
+        }
+        .back-home-btn:hover {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #7ba2c4;
+        }
+
+        /* ---- 介紹文字 ---- */
+        .intro-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1e3b4f;
+            margin-bottom: 24px;
+            padding: 0 4px;
+            border-left: 4px solid #ffb347;
+            padding-left: 16px;
+        }
+
+        /* ---- 下載列表容器 ---- */
+        .download-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 6px;
+        }
+
+        /* ---- 卡片樣式的單個下載項目 ---- */
+        .download-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: #f6faff;
+            border: 2px solid #b8d2ed;
+            padding: 14px 20px;
+            box-shadow: 3px 3px 0px #d5e6f7;
+            transition: 0.08s linear;
+            gap: 12px;
+        }
+        .download-item:hover {
+            background: #f0f8ff;
+            border-color: #7ba5c4;
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #b8d2ed;
+        }
+
+        /* ---- 我給你留了一個位置(放什麽官方客戶端那些東西)，↓是隱藏佔位列（你想顯示，就移除下方 display: none 或註解掉） ---- */
+        .download-item.placeholder-item {
+            display: none;   /* 佔位項目預設隱藏，取消隱藏刪除或改成 display: flex */
+        }
+
+        .download-info {
+            flex: 2 1 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .download-name {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: #1e4a6e;
+            border-left: 6px solid #ffb347;
+            padding-left: 12px;
+            font-family: 'UnifontPixel', monospace;
+        }
+
+        .download-desc {
+            font-size: 0.92rem;
+            color: #2f6c8f;
+            padding-left: 18px;
+            line-height: 1.5;
+        }
+
+        .download-action {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ---- 下載按鈕 ---- */
+        .download-btn {
+            display: inline-block;
+            background: #e6f0ff;
+            border: 2px solid #4982b0;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 0.95rem;
+            padding: 6px 20px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1f5a7e;
+            box-shadow: 2px 2px 0px #93bbdd;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .download-btn:hover {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #7ba2c4;
+        }
+        /* 佔位那個按鈕 */
+        .download-btn.placeholder {
+            background: #e8edf2;
+            border-color: #a0b8cc;
+            color: #6a7f94;
+            cursor: default;
+            box-shadow: 1px 1px 0px #b0c8dc;
+        }
+        .download-btn.placeholder:hover {
+            background: #e8edf2;
+            border-color: #a0b8cc;
+            color: #6a7f94;
+            transform: none;
+            box-shadow: 1px 1px 0px #b0c8dc;
+        }
+
+        /* ---- 右側小側欄 ---- */
+        .right-smallbox {
+            background: rgba(248, 252, 255, 0.96);
+            border: 3px solid #5d9ac9;
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            box-shadow: 5px 5px 0px #a1c2e0;
+            align-self: start;
+            position: sticky;
+            top: 30px;
+        }
+
+        .link-card {
+            border-bottom: 2px dotted #8fb4d4;
+            padding-bottom: 14px;
+        }
+        .link-card:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .link-card h3 {
+            font-size: 1.4rem;
+            background: #cde5ff;
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 14px;
+            border-top: 2px solid #ffbc6e;
+            color: #1e557a;
+            font-family: 'UnifontPixel', monospace;
+        }
+
+        .link-card ul {
+            list-style: none;
+            padding-left: 8px;
+        }
+        .link-card li {
+            margin: 12px 0;
+        }
+        .link-card li a {
+            color: #2d6a8f;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 1px dotted #8bb3ce;
+            transition: all 0.1s;
+            display: inline-block;
+        }
+        .link-card li a:hover {
+            color: #cc7b2c;
+            border-bottom-color: #cc7b2c;
+            transform: translateX(4px);
+            text-shadow: 1px 1px 0 #eef4ff;
+        }
+
+        /* ---- 語言切換按鈕群 ---- */
+        .lang-switch {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: #e6f0ff;
+            border: 2px solid #4982b0;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1f5a7e;
+            box-shadow: 2px 2px 0px #93bbdd;
+        }
+        .lang-btn.active {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            box-shadow: inset 1px 1px 0px #ad6d2a;
+        }
+        .lang-btn:hover {
+            background: #fee3b5;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #7ba2c4;
+        }
+
+        /* ---- 頁腳 ---- */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.75rem;
+            border-top: 2px solid #9cbedc;
+            padding-top: 18px;
+            color: #2f6c8f;
+            letter-spacing: 1px;
+        }
+
+        .blink-pixel {
+            animation: blink 1.2s step-end infinite;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ---- 響應式調整 ---- */
+        @media (max-width: 860px) {
+            body {
+                padding: 16px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .hero-banner {
+                height: 130px;
+            }
+            .right-smallbox {
+                position: static;
+            }
+            .download-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .download-action {
+                align-self: flex-end;
+                margin-top: 4px;
+            }
+            .download-name {
+                font-size: 1.05rem;
+            }
+            .download-desc {
+                font-size: 0.85rem;
+                padding-left: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-banner {
+                height: 100px;
+            }
+            .download-item {
+                padding: 12px 14px;
+            }
+            .download-btn {
+                font-size: 0.85rem;
+                padding: 5px 14px;
+            }
+            .lang-btn {
+                font-size: 0.85rem;
+                padding: 4px 12px;
+            }
+        }
+
+        /* ---- 捲軸樣式 ---- */
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #caddf0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5f93bb;
+            border: 1px solid #bfd6f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 語言切換 -->
+        <div class="lang-switch">
+            <button class="lang-btn" data-lang="zh">简体中文</button>
+            <button class="lang-btn" data-lang="zh-TW">繁體中文</button>
+            <button class="lang-btn" data-lang="en">ENGLISH</button>
+        </div>
+
+        <!-- 橫幅圖片（超級炫酷的2000年風格(超級老土)res.png） -->
+        <div class="hero-banner">
+            <img src="image/res.png" alt="資源下載橫幅">
+        </div>
+
+        <!-- 主要內容網格 -->
+        <div class="content-grid">
+            <!-- 左側大框 -->
+            <div class="left-bigbox" id="leftContent">
+                <!-- 由 JavaScript 動態渲染 -->
+            </div>
+
+            <!-- 右側小側欄 -->
+            <div class="right-smallbox" id="rightLinks">
+                <!-- 由 JavaScript 動態渲染 -->
+            </div>
+        </div>
+
+        
+        <footer>
+            <span class="blink-pixel">◉</span> SRG 桃源服务器 · 資源下載 <span class="blink-pixel">◉</span><br>
+            桃源島委員會 | 2026
+        </footer>
+    </div>
+
+    <script>
+        /**
+         * 資源下載頁
+         * 修改了一定要加注解(ㄒㄒ)我是電子文盲
+         */
+
+        const LANGUAGE_DATA = {
+            "zh": {
+                
+                pageTitle: "SRG桃源服务器 | 资源下载",
+                // 返回鈕
+                backBtn: "← 返回首页",
+                intro: " 欢迎来到SRG桃源服务器资源下载中心。以下提供各类客户端辅助模组与工具，助您获得更佳游戏体验。所有资源均为免费公益，请放心使用。",
+                // 下載列表（我留了一个佔位下載項被 CSS 隱藏，你做好了就可以取消隱藏）
+                downloads: [{
+                    name: "AllMuisicClient 音乐插件",
+                    desc: "在SRG桃源服务器中，可以点歌并听别人点的歌。",
+                    btnText: "下载",
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                }, {
+                    name: "Xaero 的世界地图",
+                    desc: "在 SRG 桃源服务器中方便寻路和探索",
+                    btnText: "下载",
+                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                }, {
+                    name: "聊天头像",
+                    desc: "在SRG桃源服务器中，通过头像来结识附近的朋友。",
+                    btnText: "下载",
+                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                }, {
+                    name: "佔位 ABC",
+                    desc: "佔位（介紹你資源，blablabla什麽東西的）",
+                    btnText: "佔位",
+                    url: "#"
+                }],
+                // 右側側欄
+                sidebarTitle: "📜 導航",
+                sidebarLinks: [
+                    { name: "玩家指南", url: "guide1.html" },
+                    { name: "规则制度", url: "rules_scl.html" },
+                    { name: "申诉协助", url: "help.html" }
+                ]
+            },
+
+            "zh-TW": {
+                pageTitle: "SRG桃源伺服器 | 資源下載",
+                backBtn: "← 返回首頁",
+                intro: " 歡迎來到 SRG 桃源伺服器資源下載中心。以下提供各類客戶端輔助模組與工具，方便您獲得更好的遊戲體驗。所有資源均為免費公益，請放心使用。",
+                downloads: [{
+                    name: "AllMuisicClient 音樂插件",
+                    desc: "在 SRG 桃源伺服器中可以點歌和聽別人點的歌",
+                    btnText: "下載",
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                }, {
+                    name: "Xaero 的世界地圖",
+                    desc: "在 SRG 桃源伺服器中方便尋路和探索",
+                    btnText: "下載",
+                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                }, {
+                    name: "聊天頭像",
+                    desc: "在 SRG 桃源伺服器中靠頭像來熟悉附近朋友們",
+                    btnText: "下載",
+                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                }, {
+                    name: "佔位 ABC",
+                    desc: "佔位（敬請期待）",
+                    btnText: "佔位",
+                    url: "#"
+                }],
+                sidebarTitle: "📜 導航",
+                sidebarLinks: [
+                    { name: "玩家指南", url: "guide1.html" },
+                    { name: "規則制度", url: "rules_scl.html" },
+                    { name: "申訴協助", url: "help.html" }
+                ]
+            },
+
+            "en": {
+                pageTitle: "SRG Taoyuan Server | Resources",
+                backBtn: "← Home",
+                intro: " Welcome to the SRG Taoyuan server resource download center. Below you will find various client-side helper mods and tools to enhance your gameplay. All resources are free and public welfare.",
+                downloads: [{
+                    name: "AllMuisicClient Music Plugin",
+                    desc: "Request songs and listen to others' requests in SRG Taoyuan server",
+                    btnText: "Download",
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                }, {
+                    name: "Xaero's World Map",
+                    desc: "Convenient for navigation and exploration in SRG Taoyuan server",
+                    btnText: "Download",
+                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                }, {
+                    name: "Chat Heads",
+                    desc: "Get familiar with nearby friends through avatars in SRG Taoyuan server",
+                    btnText: "Download",
+                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                }, {
+                    name: "Placeholder ABC",
+                    desc: "Placeholder (coming soon)",
+                    btnText: "Placeholder",
+                    url: "#"
+                }],
+                sidebarTitle: "📜 Navigation",
+                sidebarLinks: [
+                    { name: "Player Guide", url: "guide1.html" },
+                    { name: "Rules & Regulations", url: "rules_scl.html" },
+                    { name: "Appeal Assistance", url: "help.html" }
+                ]
+            }
+        };
+
+        // ---- DOM 參考 ----
+        const leftContainer = document.getElementById('leftContent');
+        const rightContainer = document.getElementById('rightLinks');
+        const langBtns = document.querySelectorAll('.lang-btn');
+
+      
+        let currentLang = 'zh';
+
+        /**
+         * 渲染左側內容（返回按鈕 + 介紹 + 下載列表）
+         * 給你留的佔位項會加上 'placeholder-item' 類，由 CSS 隱藏
+         */
+        function renderLeft(langCode) {
+            const data = LANGUAGE_DATA[langCode];
+            if (!data) return;
+
+            let html = `<a href="index.html" class="back-home-btn">${data.backBtn}</a>`;
+
+            // 介紹文字
+            html += `<div class="intro-text">${data.intro}</div>`;
+
+            // 下載列表
+            html += `<div class="download-list">`;
+            data.downloads.forEach((item, index) => {
+                const isPlaceholder = (item.url === '#');
+                // 為佔位項目添加額外類別， CSS 隱藏
+                const itemClass = isPlaceholder ? 'download-item placeholder-item' : 'download-item';
+                const btnClass = isPlaceholder ? 'download-btn placeholder' : 'download-btn';
+                const targetAttr = isPlaceholder ? '' : ' target="_blank" rel="noopener noreferrer"';
+                const onclickAttr = isPlaceholder ? ' onclick="return false;"' : '';
+                html += `
+                            <div class="${itemClass}">
+                                <div class="download-info">
+                                    <div class="download-name">${item.name}</div>
+                                    <div class="download-desc">${item.desc}</div>
+                                </div>
+                                <div class="download-action">
+                                    <a href="${item.url}" class="${btnClass}"${targetAttr}${onclickAttr}>${item.btnText}</a>
+                                </div>
+                            </div>
+                        `;
+            });
+            html += `</div>`;
+
+            leftContainer.innerHTML = html;
+        }
+
+        /**
+         * 右側側欄導航連結
+         */
+        function renderRight(langCode) {
+            const data = LANGUAGE_DATA[langCode];
+            if (!data) return;
+
+            let html = `
+                        <div class="link-card">
+                            <h3>${data.sidebarTitle}</h3>
+                            <ul>
+                    `;
+            data.sidebarLinks.forEach(link => {
+                html += `<li><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.name}</a></li>`;
+            });
+            html += `</ul></div>`;
+
+            rightContainer.innerHTML = html;
+        }
+
+        /**
+         * 切換語言主函式
+         */
+        function renderLanguage(langCode) {
+            const data = LANGUAGE_DATA[langCode];
+            if (!data) return;
+
+            // 設定瀏覽器標題
+            document.title = data.pageTitle;
+
+            renderLeft(langCode);
+            renderRight(langCode);
+
+            // 更新語言按鈕 active 狀態
+            langBtns.forEach(btn => {
+                const btnLang = btn.getAttribute('data-lang');
+                btn.classList.toggle('active', btnLang === langCode);
+            });
+
+            // 設定 html 語言屬性
+            if (langCode === 'zh') document.documentElement.lang = 'zh-CN';
+            else if (langCode === 'zh-TW') document.documentElement.lang = 'zh-TW';
+            else if (langCode === 'en') document.documentElement.lang = 'en';
+
+            currentLang = langCode;
+        }
+
+        /**
+         * 從 localStorage 或 URL 參數偵測語言
+         */
+        function detectLanguage() {
+            const saved = localStorage.getItem('y2k_universe_lang');
+            if (saved && (saved === 'zh' || saved === 'zh-TW' || saved === 'en')) {
+                return saved;
+            }
+            const params = new URLSearchParams(window.location.search);
+            const urlLang = params.get('lang');
+            if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
+                localStorage.setItem('y2k_universe_lang', urlLang);
+                return urlLang;
+            }
+            return 'zh';
+        }
+
+        /**
+         * 設定語言（並可選擇是否寫入 storage）
+         */
+        function setLanguage(langCode, updateStorage = true) {
+            if (!LANGUAGE_DATA[langCode]) return;
+            renderLanguage(langCode);
+            if (updateStorage) {
+                localStorage.setItem('y2k_universe_lang', langCode);
+            }
+        }
+
+        /**
+         * 初始化語言（依據先前記錄或預設）
+         */
+        function initLanguage() {
+            const initial = detectLanguage();
+            setLanguage(initial, true);
+        }
+
+        /**
+         * 綁定語言切換
+         */
+        function bindLangEvents() {
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const newLang = btn.getAttribute('data-lang');
+                    if (newLang && LANGUAGE_DATA[newLang]) {
+                        setLanguage(newLang, true);
+                    }
+                });
+            });
+        }
+
+        /**
+         * 橫幅圖片錯誤處理（已內聯 onerror做備援）
+         */
+        function handleBannerError() {
+            const banner = document.querySelector('.hero-banner img');
+            if (banner && banner.complete && banner.naturalWidth === 0) {
+                if (!banner.dataset.fallbackSet) {
+                    banner.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1344 170'%3E%3Crect width='1344' height='170' fill='%236aa9d9'/%3E%3Ctext x='50%25' y='50%25' font-size='20' font-family='monospace' fill='%23ffffff' text-anchor='middle' dy='.3em'%3E📸 res.png%3C/text%3E%3C/svg%3E";
+                    banner.dataset.fallbackSet = "true";
+                }
+            }
+        }
+
+        // ---- DOM 就緒後初始化 ----
+        window.addEventListener('DOMContentLoaded', () => {
+            initLanguage();
+            bindLangEvents();
+            setTimeout(handleBannerError, 300);
+            console.log("%c 資源下載頁面已載入（圖片 object-fit: contain，佔位已隱藏）", "color: #2a6d8f; font-size: 14px;");
+        });
+    </script>
+</body>
+</html>

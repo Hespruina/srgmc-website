@@ -807,7 +807,7 @@
     const resources = {
         'zh': {
             sidebar: "侧边栏",
-            navItems: ["主页", "加入游戏", "游玩指南", "SRG资讯", "组织架构", "规定制度", "申诉协助"],
+            navItems: ["主页", "加入游戏", "游玩指南", "SRG资讯", "组织架构", "规定制度", "申诉协助", "资源下载"],
             welcomeTitle: "欢迎桃源新玩家！",
             welcomeText: "\n　　欢迎来到SRG桃源服务器！Minecraft版本 26.1.*，推荐使用 26.1.2。\n　　本服支持正版与离线登录，长期运营不删档。这里无红石、生电限制，玩法高度自由。开放自由交易市场，无官方商店，还有领地、锁箱、金币等实用功能，管理高效、氛围和睦，快来开启你的冒险吧！\n \n ·本服核心玩法“生存、建筑、养老、社交” \n ·插件：“商店、领地、经济、称号、每日签到”等 \n \n 　　本服设有反作弊插件，不支持透矿。本服按照具体规定，处罚任何辱骂、盗窃及破坏等任何违规行为，保障服务器社区环境良好。游玩放心，本服无神权，若出现该行为请立即在申诉协助反映，审查依程序来提供帮助。",
             updateContent: "新版本26.1.2稳定运行 | 全新资源世界开放 | 生存世界即将更新 ",
@@ -823,7 +823,7 @@
         },
         'zh-TW': {
             sidebar: "側邊欄",
-            navItems: ["主頁", "加入遊戲", "遊玩指南", "SRG資訊", "組織架構", "規定制度", "申訴協助"],
+            navItems: ["主頁", "加入遊戲", "遊玩指南", "SRG資訊", "組織架構", "規定制度", "申訴協助", "資源下載"],
             welcomeTitle: "歡迎桃源新玩家！",
             welcomeText: "\n　　歡迎來到SRG桃源伺服器！Minecraft版本 26.1.*，推薦使用 26.1.2。\n　　本服支援正版與離線登入，長期營運不刪檔。這裡無紅石、生電限制，玩法高度自由。開放自由交易市場，無官方商店，還有領地、鎖箱、金幣等實用功能，管理高效、氛圍和睦，快來開啟你的冒險吧！\n \n ·本服核心玩法「生存、建築、養老、社交」 \n ·插件：「商店、領地、經濟、稱號、每日簽到」等 \n \n 　　本服設有反作弊插件，不支援透礦。本服依照具體規定，處罰任何辱罵、盜竊及破壞等任何違規行為，保障伺服器社群環境良好。遊玩放心，本服無神權，若出現該行為請立即在申訴協助反映，審查依程序來提供幫助。",
             updateContent: "新版本26.1.2穩定運行 | 全新資源世界開放 | 生存世界即將更新！",
@@ -839,7 +839,7 @@
         },
         'en': {
             sidebar: "Sidebar",
-            navItems: ["Home", "Join Game", "Guide", "SRG News", "Structure", "Rules", "Support"],
+            navItems: ["Home", "Join Game", "Guide", "SRG News", "Structure", "Rules", "Support", "Resources Download"],
             welcomeTitle: "Welcome New Player!",
             welcomeText: "\n   Welcome to SRG Taoyuan Server! Minecraft version 26.1.*, recommended 26.1.2.\n   The server supports both premium and offline login, long-term operation without reset. No restrictions on redstone or technical builds. Free market, no admin shop, with land claims, lockers, economy, daily rewards, and more. Friendly and efficient management. Start your adventure now!\n\n   · Core gameplay: Survival, Building, Chill, Social\n   · Plugins: Shop, Land Claim, Economy, Titles, Daily Login\n\n   Anti-cheat is enabled, no x-ray. Any violations (harassment, theft, griefing) will be punished according to the rules to maintain a healthy community. No admin abuse. If you encounter any issues, please report them in 'Support' and we will follow proper procedures.",
             updateContent: "Version 26.1.2 is live | New resource world opened |  Survival world will be update",
@@ -889,6 +889,7 @@
             else if (item === "申诉协助" || item === "申訴協助" || item === "Support") a.href = 'help.html';
             else if (item === "SRG资讯" || item === "SRG資訊" || item === "SRG News") a.href = 'srginfo_main.html';
             else if (item === "主页" || item === "主頁" || item === "Home") a.href = 'index.html';
+            else if (item === "资源下载" || item === "資源下載" || item === "Resources Download") a.href = 'res.html';
             else {
                 a.href = '#';
                 a.addEventListener('click', (e) => { e.preventDefault(); alert(`✨ SRG导航 | ${item} ✨\n(功能即将开放)`); });
