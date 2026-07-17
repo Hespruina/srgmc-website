@@ -450,7 +450,7 @@
             { title: "服主", content: "服务器主人，可管辖服务器一切事务，负责桃源岛委员会人事变更，撤销委员会委员不当决定，委任管理、市长及委派居民；有权处分违规人员。\n现任服主为：桑叶（DeityMan_）" },
             { title: "管理", content: "管理由服主委任，拥有在服务器的治理权，负责日常维护、规则执行及紧急处理，许可权的授予取决于服主。" },
             { title: "市长", content: "市长由服主委任，与管理职权相同，负责城市事务，但有服主授权代理性质，工作向服主负责。\n现任市长为：禄门凯文（LVMEN__KWAN）" },
-            { title: "居民", content: "即是玩家。玩家拥有探索、建造與交易的自由，物品及居所受到保护不受侵害，有因处分提出申诉的权力。" },
+            { title: "居民", content: "即是玩家。玩家拥有探索、建造与交易的自由，物品及居所受到保护不受侵害，有因处分提出申诉的权力。" },
             { title: "玩家公会", content: "多名玩家构成的组织，合作生存、友好社交，互相协助来共同冒险。" },
             { title: "委派居民", content: "由服主、管理委任的辅助管理治理服务器的玩家，解决日常纠纷和向服主、管理报告情况。" }
         ],
@@ -689,6 +689,40 @@
         bindImageClickModal();
     }
 
+    function detectInitialLanguage() {
+        // 1. URL 參數優先
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        if (urlLang) {
+            const normalized = (urlLang === 'zh') ? 'sc' : (urlLang === 'zh-TW') ? 'tc' : (urlLang === 'en') ? 'en' : urlLang;
+            if (accordionData[normalized]) {
+                const commonLang = (normalized === 'sc') ? 'zh' : (normalized === 'tc') ? 'zh-TW' : 'en';
+                localStorage.setItem('srg_language_pref', commonLang);
+                return normalized;
+            }
+        }
+        // 2. 本地存儲記錄（兼容其他頁面的 key）
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang) {
+            const normalized = (savedLang === 'zh') ? 'sc' : (savedLang === 'zh-TW') ? 'tc' : (savedLang === 'en') ? 'en' : savedLang;
+            if (accordionData[normalized]) return normalized;
+        }
+        // 3. 瀏覽器語言偏好
+        const navLang = navigator.language || navigator.userLanguage;
+        if (navLang) {
+            const lang = navLang.toLowerCase();
+            if (lang.startsWith('zh-tw') || lang.startsWith('zh-hk') || lang.startsWith('zh-mo')) {
+                return 'tc';
+            } else if (lang.startsWith('zh')) {
+                return 'sc';
+            } else if (lang.startsWith('en')) {
+                return 'en';
+            }
+        }
+        // 4. 默認簡體中文
+        return 'sc';
+    }
+
     function bindLangEvents() {
         const btns = document.querySelectorAll('.lang-btn');
         btns.forEach(btn => {
@@ -696,6 +730,9 @@
                 const lang = btn.getAttribute('data-lang');
                 if (lang === currentLang) return;
                 enhancedSwitch(lang);
+                // 保存為通用 key，兼容其他頁面
+                const commonLang = (lang === 'sc') ? 'zh' : (lang === 'tc') ? 'zh-TW' : 'en';
+                localStorage.setItem('srg_language_pref', commonLang);
             });
         });
     }
@@ -703,7 +740,8 @@
     function init() {
         buildAccordion();
         bindLangEvents();
-        enhancedSwitch('sc');
+        const initialLang = detectInitialLanguage();
+        enhancedSwitch(initialLang);
         bindImageClickModal();
     }
     init();

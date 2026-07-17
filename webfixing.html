@@ -209,27 +209,98 @@
 <body>
 
 <div class="container">
+    <!-- 語言切換 -->
+    <div style="text-align:right; margin-bottom:16px;">
+        <button class="lang-btn" data-lang="zh" style="background:#e6f0ff; border:2px solid #4982b0; font-family:'UnifontPixel',monospace; font-weight:bold; font-size:0.9rem; padding:5px 14px; cursor:pointer; color:#1f5a7e; box-shadow:2px 2px 0px #93bbdd; margin-right:8px;">简体中文</button>
+        <button class="lang-btn" data-lang="zh-TW" style="background:#e6f0ff; border:2px solid #4982b0; font-family:'UnifontPixel',monospace; font-weight:bold; font-size:0.9rem; padding:5px 14px; cursor:pointer; color:#1f5a7e; box-shadow:2px 2px 0px #93bbdd;">繁體中文</button>
+    </div>
+
     <div class="bow-gif">
         <img src="image/loadingorfixing/dejiko.gif" alt="鞠躬小人" onerror="this.src='https://placehold.co/180x180/ffdd99/black?text=dejiko.gif'">
     </div>
 
     <div class="message">
-        <p class="sorry">本页还在施工！非常抱歉！</p>
-        <p class="expect">敬请期待！</p>
+        <p class="sorry" id="msgSorry">本页还在施工！非常抱歉！</p>
+        <p class="expect" id="msgExpect">敬请期待！</p>
     </div>
 
-    <a href="index.html" class="home-btn">返回主页</a>
+    <a href="index.html" class="home-btn" id="btnHome">返回主页</a>
 
     <div class="corner-gif">
         <img src="image/loadingorfixing/chi.gif" alt="左下角小人" onerror="this.src='https://placehold.co/80x80/ffdd99/black?text=chi.gif'">
     </div>
 
     <footer>
-        <span class="blink-pixel">◉</span> SRG 桃源服务器 | 网页施工队 <span class="blink-pixel">◉</span>
+        <span class="blink-pixel">◉</span> <span id="footerText">SRG 桃源服务器 | 网页施工队</span> <span class="blink-pixel">◉</span>
     </footer>
 </div>
 
 <script>
+    const PAGE_LANG = {
+        'zh': {
+            sorry: '本页还在施工！非常抱歉！',
+            expect: '敬请期待！',
+            homeBtn: '返回主页',
+            footer: 'SRG 桃源服务器 | 网页施工队'
+        },
+        'zh-TW': {
+            sorry: '本頁還在施工！非常抱歉！',
+            expect: '敬請期待！',
+            homeBtn: '返回主頁',
+            footer: 'SRG 桃源伺服器 | 網頁施工隊'
+        }
+    };
+
+    function detectInitialLanguage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        if (urlLang && PAGE_LANG[urlLang]) {
+            localStorage.setItem('srg_language_pref', urlLang);
+            return urlLang;
+        }
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang && PAGE_LANG[savedLang]) return savedLang;
+        const navLang = navigator.language || navigator.userLanguage;
+        if (navLang) {
+            const lang = navLang.toLowerCase();
+            if (lang.startsWith('zh-tw') || lang.startsWith('zh-hk') || lang.startsWith('zh-mo')) {
+                return 'zh-TW';
+            } else if (lang.startsWith('zh')) {
+                return 'zh';
+            }
+        }
+        return 'zh';
+    }
+
+    function setPageLang(lang) {
+        const data = PAGE_LANG[lang];
+        if (!data) return;
+        document.getElementById('msgSorry').innerText = data.sorry;
+        document.getElementById('msgExpect').innerText = data.expect;
+        document.getElementById('btnHome').innerText = data.homeBtn;
+        document.getElementById('footerText').innerText = data.footer;
+        localStorage.setItem('srg_language_pref', lang);
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.style.background = '#ffda9e';
+                btn.style.borderColor = '#b85c1a';
+                btn.style.color = '#2e472a';
+            } else {
+                btn.style.background = '#e6f0ff';
+                btn.style.borderColor = '#4982b0';
+                btn.style.color = '#1f5a7e';
+            }
+        });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            setPageLang(lang);
+        });
+    });
+
+    setPageLang(detectInitialLanguage());
     console.log("%c 施工中页面已上线 · 页面正在建设中，稍后回来 ", "color: #cc7b2c; font-size: 14px; font-family: monospace;");
 </script>
 </body>

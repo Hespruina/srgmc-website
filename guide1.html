@@ -499,16 +499,31 @@
     }
 
     function detectLanguageFromPrevious() {
-        let savedLang = localStorage.getItem('y2k_universe_lang');
-        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
-            return savedLang;
-        }
+        // 1. URL 參數優先
         const urlParams = new URLSearchParams(window.location.search);
         const urlLang = urlParams.get('lang');
         if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
-            localStorage.setItem('y2k_universe_lang', urlLang);
+            localStorage.setItem('srg_language_pref', urlLang);
             return urlLang;
         }
+        // 2. 本地存儲記錄
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
+            return savedLang;
+        }
+        // 3. 瀏覽器語言偏好
+        const navLang = navigator.language || navigator.userLanguage;
+        if (navLang) {
+            const lang = navLang.toLowerCase();
+            if (lang.startsWith('zh-tw') || lang.startsWith('zh-hk') || lang.startsWith('zh-mo')) {
+                return 'zh-TW';
+            } else if (lang.startsWith('zh')) {
+                return 'zh';
+            } else if (lang.startsWith('en')) {
+                return 'en';
+            }
+        }
+        // 4. 默認簡體中文
         return 'zh';
     }
 
@@ -519,7 +534,7 @@
         currentLang = langCode;
         renderGuide(currentLang);
         if (updateStorage) {
-            localStorage.setItem('y2k_universe_lang', currentLang);
+            localStorage.setItem('srg_language_pref', currentLang);
         }
         langBtns.forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');

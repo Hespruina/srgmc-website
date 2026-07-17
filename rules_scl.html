@@ -577,7 +577,7 @@
                 paragraphs: [
                     "为维护SRG桃源服务器的公平、友善与秩序，特制定本规章。所有进入服务器的玩家默认知悉并遵守本规定，保障每位成员的正常游戏体验。处罚措施从警告、临时封禁到永久封禁，幅度公开透明。",
                     "领地保护机制、公共设施使用规范、玩家申诉通道及定期活动等非处罚性制度同步生效。服务器管理组保留最终解释权，但所有判罚均依据明文条例，绝不无故问责。",
-                    "请定期查阅规则更新，尊重他人劳动成果，共同构建复和谐社区。任何违规行为都将按照裁量基准进行处理，同时提供完整的复议渠道。"
+                    "请定期查阅规则更新，尊重他人劳动成果，共同构建和谐社区。任何违规行为都将按照裁量基准进行处理，同时提供完整的复议渠道。"
                 ]
             },
             right: {
@@ -873,16 +873,31 @@
     //  语言偏好检测 & 初始化
     // ============================================================
     function detectLanguageFromPrevious() {
-        let savedLang = localStorage.getItem('srg_language_pref');
-        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
-            return savedLang;
-        }
+        // 1. URL 參數優先
         const urlParams = new URLSearchParams(window.location.search);
         const urlLang = urlParams.get('lang');
         if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
             localStorage.setItem('srg_language_pref', urlLang);
             return urlLang;
         }
+        // 2. 本地存儲記錄
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
+            return savedLang;
+        }
+        // 3. 瀏覽器語言偏好
+        const navLang = navigator.language || navigator.userLanguage;
+        if (navLang) {
+            const lang = navLang.toLowerCase();
+            if (lang.startsWith('zh-tw') || lang.startsWith('zh-hk') || lang.startsWith('zh-mo')) {
+                return 'zh-TW';
+            } else if (lang.startsWith('zh')) {
+                return 'zh';
+            } else if (lang.startsWith('en')) {
+                return 'en';
+            }
+        }
+        // 4. 默認簡體中文
         return 'zh';
     }
 

@@ -413,8 +413,8 @@
     </div>
 
     <div class="hero-banner">
-        <img src="image/baa.jpg" alt="背景圖" onerror="this.src='https://placehold.co/1200x300/6aa9d9/white?text=🖼️+Replace+Me+in+root'">
-        <div class="site-title-overlay" id="siteNameOverlay">✦ SRG 管理團隊 ✦</div>
+        <img src="image/baa.jpg" alt="背景图" onerror="this.src='https://placehold.co/1200x300/6aa9d9/white?text=🖼️+Replace+Me+in+root'">
+        <div class="site-title-overlay" id="siteNameOverlay">✦ SRG 管理团队 ✦</div>
     </div>
 
     <div class="content-grid">
@@ -657,16 +657,31 @@
 
     // 從 localStorage 或 URL 偵測語言
     function detectLanguageFromPrevious() {
-        let savedLang = localStorage.getItem('y2k_universe_lang');
-        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
-            return savedLang;
-        }
+        // 1. URL 參數優先
         const urlParams = new URLSearchParams(window.location.search);
         const urlLang = urlParams.get('lang');
         if (urlLang && (urlLang === 'zh' || urlLang === 'zh-TW' || urlLang === 'en')) {
-            localStorage.setItem('y2k_universe_lang', urlLang);
+            localStorage.setItem('srg_language_pref', urlLang);
             return urlLang;
         }
+        // 2. 本地存儲記錄
+        let savedLang = localStorage.getItem('srg_language_pref');
+        if (savedLang && (savedLang === 'zh' || savedLang === 'zh-TW' || savedLang === 'en')) {
+            return savedLang;
+        }
+        // 3. 瀏覽器語言偏好
+        const navLang = navigator.language || navigator.userLanguage;
+        if (navLang) {
+            const lang = navLang.toLowerCase();
+            if (lang.startsWith('zh-tw') || lang.startsWith('zh-hk') || lang.startsWith('zh-mo')) {
+                return 'zh-TW';
+            } else if (lang.startsWith('zh')) {
+                return 'zh';
+            } else if (lang.startsWith('en')) {
+                return 'en';
+            }
+        }
+        // 4. 默認簡體中文
         return 'zh';
     }
 
@@ -677,7 +692,7 @@
         currentLang = langCode;
         renderLanguage(currentLang);
         if (updateStorage) {
-            localStorage.setItem('y2k_universe_lang', currentLang);
+            localStorage.setItem('srg_language_pref', currentLang);
         }
         if (langCode === 'zh') document.documentElement.lang = 'zh-CN';
         else if (langCode === 'zh-TW') document.documentElement.lang = 'zh-TW';
