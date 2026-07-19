@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>SRG桃源服务器 | 资源下载</title>
     <style>
-        
+        /* ---- Hello! LVMEN-KWAN and Hespruina!  早晨！記得食早餐！ ---- */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +14,6 @@
             image-rendering: pixelated;
         }
 
-        /* ---- 字體 ---- */
         @font-face {
             font-family: 'UnifontPixel';
             src: url('font/Unifont13.0.01.ttf') format('truetype');
@@ -23,7 +22,6 @@
             font-display: swap;
         }
 
-        /* ---- 背景 ---- */
         body {
             font-family: 'UnifontPixel', 'Courier New', 'VT323', monospace;
             background-color: #9abed5;
@@ -48,7 +46,6 @@
             }
         }
 
-        /* ---- 主容器 ---- */
         .container {
             position: relative;
             z-index: 2;
@@ -62,7 +59,6 @@
             transition: all 0.2s;
         }
 
-        /* ---- 橫幅圖片(我設計的那個圖片res.png) ---- */
         .hero-banner {
             position: relative;
             width: 100%;
@@ -77,14 +73,13 @@
         .hero-banner img {
             width: 100%;
             height: 100%;
-            object-fit: contain;          /* 爲了圖片部分不被吞掉而加入 */
+            object-fit: contain;
             object-position: center;
             display: block;
             image-rendering: auto;
-            background-color: #85b9e0;    /* 藍色~ */
+            background-color: #85b9e0;
         }
 
-        /* ---- 內容網格（左大右小）一般就這樣做固定模板就行了 ---- */
         .content-grid {
             display: grid;
             grid-template-columns: 4fr 1fr;
@@ -92,7 +87,6 @@
             margin: 20px 0 25px;
         }
 
-        /* ---- 左側大框 ---- */
         .left-bigbox {
             background: rgba(252, 253, 255, 0.94);
             border: 3px solid #5d9ac9;
@@ -100,7 +94,6 @@
             box-shadow: 5px 5px 0px #b8d2ed;
         }
 
-        /* ---- 返回按鈕 ---- */
         .back-home-btn {
             display: inline-block;
             background: #e6f0ff;
@@ -124,7 +117,6 @@
             box-shadow: 4px 4px 0px #7ba2c4;
         }
 
-        /* ---- 介紹文字 ---- */
         .intro-text {
             font-size: 1rem;
             line-height: 1.7;
@@ -135,7 +127,6 @@
             padding-left: 16px;
         }
 
-        /* ---- 下載列表容器 ---- */
         .download-list {
             display: flex;
             flex-direction: column;
@@ -143,7 +134,6 @@
             margin-top: 6px;
         }
 
-        /* ---- 卡片樣式的單個下載項目 ---- */
         .download-item {
             display: flex;
             flex-wrap: wrap;
@@ -163,9 +153,8 @@
             box-shadow: 5px 5px 0px #b8d2ed;
         }
 
-        /* ---- 我給你留了一個位置(放什麽官方客戶端那些東西)，↓是隱藏佔位列（你想顯示，就移除下方 display: none 或註解掉） ---- */
         .download-item.placeholder-item {
-            display: none;   /* 佔位項目預設隱藏，取消隱藏刪除或改成 display: flex */
+            display: none;
         }
 
         .download-info {
@@ -197,7 +186,6 @@
             align-items: center;
         }
 
-        /* ---- 下載按鈕 ---- */
         .download-btn {
             display: inline-block;
             background: #e6f0ff;
@@ -220,7 +208,6 @@
             transform: translate(-1px, -1px);
             box-shadow: 4px 4px 0px #7ba2c4;
         }
-        /* 佔位那個按鈕 */
         .download-btn.placeholder {
             background: #e8edf2;
             border-color: #a0b8cc;
@@ -236,7 +223,6 @@
             box-shadow: 1px 1px 0px #b0c8dc;
         }
 
-        /* ---- 右側小側欄 ---- */
         .right-smallbox {
             background: rgba(248, 252, 255, 0.96);
             border: 3px solid #5d9ac9;
@@ -292,7 +278,6 @@
             text-shadow: 1px 1px 0 #eef4ff;
         }
 
-        /* ---- 語言切換按鈕群 ---- */
         .lang-switch {
             display: flex;
             justify-content: flex-end;
@@ -325,7 +310,6 @@
             box-shadow: 4px 4px 0px #7ba2c4;
         }
 
-        /* ---- 頁腳 ---- */
         footer {
             margin-top: 30px;
             text-align: center;
@@ -350,7 +334,6 @@
             }
         }
 
-        /* ---- 響應式調整 ---- */
         @media (max-width: 860px) {
             body {
                 padding: 16px;
@@ -399,7 +382,6 @@
             }
         }
 
-        /* ---- 捲軸樣式 ---- */
         ::-webkit-scrollbar {
             width: 12px;
             background: #caddf0;
@@ -407,6 +389,145 @@
         ::-webkit-scrollbar-thumb {
             background: #5f93bb;
             border: 1px solid #bfd6f0;
+        }
+
+        /* ---- 模態框样式 ---- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.15s ease-out;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-box {
+            background: #f6faff;
+            border: 4px solid #3f7eb6;
+            box-shadow: 12px 12px 0px rgba(47, 79, 109, 0.35);
+            padding: 30px 34px 34px 34px;
+            max-width: 480px;
+            width: 92%;
+            position: relative;
+        }
+
+        .modal-box h2 {
+            font-family: 'UnifontPixel', monospace;
+            font-size: 1.5rem;
+            color: #1e4a6e;
+            border-left: 6px solid #ffb347;
+            padding-left: 14px;
+            margin-bottom: 8px;
+        }
+
+        .modal-box .modal-sub {
+            font-size: 0.95rem;
+            color: #2f6c8f;
+            padding-left: 20px;
+            margin-bottom: 24px;
+            border-bottom: 2px dotted #b8d2ed;
+            padding-bottom: 16px;
+        }
+
+        .modal-version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .modal-version-btn {
+            display: block;
+            width: 100%;
+            background: #e6f0ff;
+            border: 2px solid #4982b0;
+            font-family: 'UnifontPixel', monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            color: #1f5a7e;
+            box-shadow: 3px 3px 0px #93bbdd;
+            text-align: center;
+            text-decoration: none;
+        }
+        .modal-version-btn:hover {
+            background: #ffda9e;
+            border-color: #b85c1a;
+            color: #2e472a;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #7ba2c4;
+        }
+        .modal-version-btn .badge {
+            display: inline-block;
+            background: #ffbc6e;
+            color: #1e3b4f;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            margin-left: 10px;
+            border: 1px solid #b85c1a;
+            vertical-align: middle;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-family: 'UnifontPixel', monospace;
+            font-size: 2rem;
+            color: #5f8aaa;
+            cursor: pointer;
+            transition: 0.08s;
+            line-height: 1;
+        }
+        .modal-close-btn:hover {
+            color: #b85c1a;
+            transform: rotate(90deg);
+        }
+
+        .modal-footer-note {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #6a8fa8;
+            text-align: center;
+            border-top: 1px dotted #b8d2ed;
+            padding-top: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .modal-box {
+                padding: 24px 18px 26px 18px;
+            }
+            .modal-box h2 {
+                font-size: 1.2rem;
+                padding-left: 10px;
+            }
+            .modal-version-btn {
+                font-size: 0.95rem;
+                padding: 10px 14px;
+            }
         }
     </style>
 </head>
@@ -420,9 +541,9 @@
             <button class="lang-btn" data-lang="en">ENGLISH</button>
         </div>
 
-        <!-- 橫幅圖片（超級炫酷的2000年風格(超級老土)res.png） -->
+        <!-- 橫幅圖片 -->
         <div class="hero-banner">
-            <img src="image/res.png" alt="資源下載橫幅">
+            <img src="image/res.png" alt="資源下載橫幅" />
         </div>
 
         <!-- 主要內容網格 -->
@@ -438,42 +559,61 @@
             </div>
         </div>
 
-        
+        <!-- ----↓ 音樂插件版本選擇框（下次不這麽做了）↓ ---- -->
+        <div class="modal-overlay" id="versionModal">
+            <div class="modal-box">
+                <button class="modal-close-btn" id="modalCloseBtn" aria-label="关闭">✕</button>
+                <h2 id="modalTitle">选择版本</h2>
+                <div class="modal-sub" id="modalSub">请选择您需要的模组版本</div>
+                <div class="modal-version-list" id="modalVersionList">
+                    <!-- 由 JavaScript 动态生成 -->
+                </div>
+                <div class="modal-footer-note">✦ 点击版本按钮开始下载 ✦</div>
+            </div>
+        </div>
+        <!-- ---- ↑ 音樂插件版本段落结束(連壓縮包都不會開的孩子，很難在社會生存的！) ↑ ---- -->
+
         <footer>
-            <span class="blink-pixel">◉</span> SRG 桃源服务器 · 資源下載 <span class="blink-pixel">◉</span><br>
-            桃源島委員會 | 2026
+            <span class="blink-pixel">◉</span> SRG 桃源服务器 · 資源下載 <span class="blink-pixel">◉</span><br />
+            桃源岛委员会 | 2026
         </footer>
     </div>
 
     <script>
         /**
          * 資源下載頁
-         * 修改了一定要加注解(ㄒㄒ)我是電子文盲
+         * 修改了一定要加注解,我是電子文盲 :(
          */
 
         const LANGUAGE_DATA = {
             "zh": {
-                
+
                 pageTitle: "SRG桃源服务器 | 资源下载",
                 // 返回鈕
                 backBtn: "← 返回首页",
                 intro: " 欢迎来到SRG桃源服务器资源下载中心。以下提供各类客户端辅助模组与工具，助您获得更佳游戏体验。所有资源均为免费公益，请放心使用。",
-                // 下載列表（我留了一个佔位下載項被 CSS 隱藏，你做好了就可以取消隱藏）
+                // 下載列表
                 downloads: [{
                     name: "AllMuisicClient 音乐插件",
                     desc: "在SRG桃源服务器中，可以点歌并听别人点的歌。",
                     btnText: "下载",
-                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip",
+                    // 下次還是用zip壓縮包吧，不然加選擇下載内容累死人了！
+                    versionSelector: true,
+                    versions: [
+                        { name: "fabric 26.1", url: "https://drive.zhrhello.top/@s/5CiByUsi" },
+                        { name: "neoforge 26.1", url: "https://drive.zhrhello.top/@s/vvYDUWSy" }
+                    ]
                 }, {
                     name: "Xaero 的世界地图",
                     desc: "在 SRG 桃源服务器中方便寻路和探索",
                     btnText: "下载",
-                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                    url: "https://drive.zhrhello.top/@s/9NBSUM5u"
                 }, {
                     name: "聊天头像",
                     desc: "在SRG桃源服务器中，通过头像来结识附近的朋友。",
                     btnText: "下载",
-                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                    url: "https://drive.zhrhello.top/@s/BrCHJnEN"
                 }, {
                     name: "佔位 ABC",
                     desc: "佔位（介紹你資源，blablabla什麽東西的）",
@@ -497,17 +637,23 @@
                     name: "AllMuisicClient 音樂插件",
                     desc: "在 SRG 桃源伺服器中可以點歌和聽別人點的歌",
                     btnText: "下載",
-                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip",
+                    // 繁中，如果資源更新不要忘記修改繁重和英文資源
+                    versionSelector: true,
+                    versions: [
+                        { name: "fabric 26.1", url: "https://drive.zhrhello.top/@s/5CiByUsi" },
+                        { name: "neoforge 26.1", url: "https://drive.zhrhello.top/@s/vvYDUWSy" }
+                    ]
                 }, {
                     name: "Xaero 的世界地圖",
                     desc: "在 SRG 桃源伺服器中方便尋路和探索",
                     btnText: "下載",
-                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                    url: "https://drive.zhrhello.top/@s/9NBSUM5u"
                 }, {
                     name: "聊天頭像",
                     desc: "在 SRG 桃源伺服器中靠頭像來熟悉附近朋友們",
                     btnText: "下載",
-                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                    url: "https://drive.zhrhello.top/@s/BrCHJnEN"
                 }, {
                     name: "佔位 ABC",
                     desc: "佔位（敬請期待）",
@@ -530,17 +676,23 @@
                     name: "AllMuisicClient Music Plugin",
                     desc: "Request songs and listen to others' requests in SRG Taoyuan server",
                     btnText: "Download",
-                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip"
+                    url: "https://drive.zhrhello.top/website/resource/allmusic_client.zip",
+                    // 英文的音樂插件版本選擇，一定記得！全部更換！
+                    versionSelector: true,
+                    versions: [
+                        { name: "fabic 26.1", url: "https://drive.zhrhello.top/@s/5CiByUsi" },
+                        { name: "neoforge 26.1", url: "https://drive.zhrhello.top/@s/vvYDUWSy" }
+                    ]
                 }, {
                     name: "Xaero's World Map",
                     desc: "Convenient for navigation and exploration in SRG Taoyuan server",
                     btnText: "Download",
-                    url: "https://drive.zhrhello.top/website/resource/xaeroworldmap-all_ver-26.1.2-1.44.2.zip"
+                    url: "https://drive.zhrhello.top/@s/9NBSUM5u"
                 }, {
                     name: "Chat Heads",
                     desc: "Get familiar with nearby friends through avatars in SRG Taoyuan server",
                     btnText: "Download",
-                    url: "https://drive.zhrhello.top/website/resource/chat_heads-1.2.4-fabric_neoforge-26.1.zip"
+                    url: "https://drive.zhrhello.top/@s/BrCHJnEN"
                 }, {
                     name: "Placeholder ABC",
                     desc: "Placeholder (coming soon)",
@@ -561,12 +713,70 @@
         const rightContainer = document.getElementById('rightLinks');
         const langBtns = document.querySelectorAll('.lang-btn');
 
-      
         let currentLang = 'zh';
+
+        // ---- 新增：模态框 DOM 引用 ----
+        const modalOverlay = document.getElementById('versionModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSub = document.getElementById('modalSub');
+        const modalVersionList = document.getElementById('modalVersionList');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        // ---- 新增：模态框控制函数 ----
+        function openVersionModal(itemName, versions, langCode) {
+            // 根据语言设置标题和副标题
+            const langMap = {
+                'zh': { title: '选择版本', sub: '请选择您需要的模组版本' },
+                'zh-TW': { title: '選擇版本', sub: '請選擇您需要的模組版本' },
+                'en': { title: 'Select Version', sub: 'Please choose the mod version you need' }
+            };
+            const texts = langMap[langCode] || langMap['zh'];
+
+            modalTitle.textContent = texts.title;
+            modalSub.textContent = texts.sub;
+
+            // 生成版本按钮
+            let html = '';
+            versions.forEach((v, idx) => {
+                const label = v.name + (idx === 0 ? ' ⭐' : '');
+                html += `
+                            <a href="${v.url}" class="modal-version-btn" target="_blank" rel="noopener noreferrer">
+                                ${label}
+                            </a>
+                        `;
+            });
+            modalVersionList.innerHTML = html;
+
+            // 显示模态框
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVersionModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ---- 音樂插件版本選擇的点击模态框外部关闭 ----
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeVersionModal();
+            }
+        });
+
+        // ---- 音樂插件版本選擇的关闭按钮 ----
+        modalCloseBtn.addEventListener('click', closeVersionModal);
+
+        // ---- 音樂插件版本選擇ESC键关闭 ----
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeVersionModal();
+            }
+        });
 
         /**
          * 渲染左側內容（返回按鈕 + 介紹 + 下載列表）
-         * 給你留的佔位項會加上 'placeholder-item' 類，由 CSS 隱藏
+         * 新增修改支持了versionSelector标记
          */
         function renderLeft(langCode) {
             const data = LANGUAGE_DATA[langCode];
@@ -581,26 +791,69 @@
             html += `<div class="download-list">`;
             data.downloads.forEach((item, index) => {
                 const isPlaceholder = (item.url === '#');
-                // 為佔位項目添加額外類別， CSS 隱藏
+                // 佔位項目隱藏(如果你要使用占位看一下這裏)
                 const itemClass = isPlaceholder ? 'download-item placeholder-item' : 'download-item';
-                const btnClass = isPlaceholder ? 'download-btn placeholder' : 'download-btn';
-                const targetAttr = isPlaceholder ? '' : ' target="_blank" rel="noopener noreferrer"';
-                const onclickAttr = isPlaceholder ? ' onclick="return false;"' : '';
-                html += `
-                            <div class="${itemClass}">
-                                <div class="download-info">
-                                    <div class="download-name">${item.name}</div>
-                                    <div class="download-desc">${item.desc}</div>
+
+                // ---- 資源判断是否需要版本选择器 ----
+                if (item.versionSelector && item.versions && item.versions.length > 0) {
+                    // 如果需要版本選擇按鈕,點擊彈出模態框
+                    const btnClass = 'download-btn';
+                    // 使用 data 屬性傳遞數據，點擊時通過事件監聽處理
+                    const dataAttrs =
+                        ` data-version-item="${encodeURIComponent(JSON.stringify({ name: item.name, versions: item.versions }))}" data-lang="${langCode}"`;
+                    html += `
+                                <div class="${itemClass}">
+                                    <div class="download-info">
+                                        <div class="download-name">${item.name}</div>
+                                        <div class="download-desc">${item.desc}</div>
+                                    </div>
+                                    <div class="download-action">
+                                        <button class="${btnClass}"${dataAttrs}>${item.btnText}</button>
+                                    </div>
                                 </div>
-                                <div class="download-action">
-                                    <a href="${item.url}" class="${btnClass}"${targetAttr}${onclickAttr}>${item.btnText}</a>
+                            `;
+                } else {
+                    // 普通下載鈕
+                    const btnClass = isPlaceholder ? 'download-btn placeholder' : 'download-btn';
+                    const targetAttr = isPlaceholder ? '' : ' target="_blank" rel="noopener noreferrer"';
+                    const onclickAttr = isPlaceholder ? ' onclick="return false;"' : '';
+                    html += `
+                                <div class="${itemClass}">
+                                    <div class="download-info">
+                                        <div class="download-name">${item.name}</div>
+                                        <div class="download-desc">${item.desc}</div>
+                                    </div>
+                                    <div class="download-action">
+                                        <a href="${item.url}" class="${btnClass}"${targetAttr}${onclickAttr}>${item.btnText}</a>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+                }
             });
             html += `</div>`;
 
             leftContainer.innerHTML = html;
+
+            // ---- 資源版本選擇钮綁定點擊 ----
+            const versionBtns = leftContainer.querySelectorAll('.download-btn[data-version-item]');
+            versionBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const raw = this.getAttribute('data-version-item');
+                    const lang = this.getAttribute('data-lang') || 'zh';
+                    try {
+                        const dataObj = JSON.parse(decodeURIComponent(raw));
+                        if (dataObj.versions && dataObj.versions.length > 0) {
+                            openVersionModal(dataObj.name, dataObj.versions, lang);
+                        } else {
+                            
+                            console.warn('版本信息缺失');
+                        }
+                    } catch (err) {
+                        console.error('解析版本数据失败', err);
+                    }
+                });
+            });
         }
 
         /**
@@ -701,7 +954,7 @@
         }
 
         /**
-         * 橫幅圖片錯誤處理（已內聯 onerror做備援）
+         * 橫幅圖片錯誤處理
          */
         function handleBannerError() {
             const banner = document.querySelector('.hero-banner img');
@@ -718,7 +971,7 @@
             initLanguage();
             bindLangEvents();
             setTimeout(handleBannerError, 300);
-            console.log("%c 資源下載頁面已載入（圖片 object-fit: contain，佔位已隱藏）", "color: #2a6d8f; font-size: 14px;");
+            console.log("%c 資源下載頁面已載入（图片 object-fit: contain，佔位已隱藏）", "color: #2a6d8f; font-size: 14px;");
         });
     </script>
 </body>
